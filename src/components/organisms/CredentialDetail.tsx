@@ -1,17 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
 
-import { Card } from "../../types";
+import { Manifest } from "../../types";
 import { CredentialCard } from "../molecules/CredentialCard";
 
 export interface CredentialDetailProps {
-  card: Card;
+  manifest: Manifest;
 }
 
-export const CredentialDetail: React.FC<CredentialDetailProps> = ({ card }) => {
+export const CredentialDetail: React.FC<CredentialDetailProps> = ({ manifest }) => {
   return (
     <Box>
-      <CredentialCard card={card} />
+      <CredentialCard manifest={manifest} />
     </Box>
   );
 };

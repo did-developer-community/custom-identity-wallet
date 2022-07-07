@@ -4,10 +4,10 @@ import React from "react";
 import { HomeTemplate } from "../components/templates/Home";
 import { isExistKeyPair } from "../lib/repository/keyPair";
 import { getVCs } from "../lib/repository/vc";
-import { Card } from "../types";
+import { Manifest } from "../types";
 
 const IndexPage: React.FC = () => {
-  const [cards, setCards] = React.useState<Card[]>([]);
+  const [manifests, setManifests] = React.useState<Manifest[]>([]);
   const router = useRouter();
   React.useEffect(() => {
     if (!isExistKeyPair()) {
@@ -15,14 +15,14 @@ const IndexPage: React.FC = () => {
     }
     const vcs = getVCs();
     if (vcs) {
-      const cards = Object.values(getVCs()).map((vc) => {
-        return vc.manifest.display.card;
+      const manifestList = Object.values(vcs).map((vc) => {
+        return vc.manifest;
       });
-      setCards(cards);
+      setManifests(manifestList);
     }
   }, [router]);
 
-  return <HomeTemplate cards={cards} />;
+  return <HomeTemplate manifests={manifests} />;
 };
 
 export default IndexPage;

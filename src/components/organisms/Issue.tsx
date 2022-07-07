@@ -89,7 +89,7 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
         acquiredAttestation && (
           <>
             <Box px="4" mb="8">
-              <CredentialCard card={manifest.display.card} />
+              <CredentialCard manifest={manifest} />
             </Box>
             <Box mb="8">
               {manifest.input.attestations.idTokens.map((idToken, i) => {
