@@ -59,7 +59,7 @@ export const SelectVC: React.FC<SelectVCProps> = (props) => {
                     hundleClick(vcID);
                   }}
                 >
-                  <CredentialCard card={vcData.manifest.display.card} />
+                  <CredentialCard manifest={vcData.manifest} />
                   {props.presentationVCID.includes(vcID) && <Icon w="4" h="4" color="green.400" as={CheckIcon} />}
                 </Box>
               </ListItem>
