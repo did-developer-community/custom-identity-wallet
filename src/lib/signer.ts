@@ -10,6 +10,12 @@ export interface KeyPair {
   privateJwk: JWK;
 }
 
+export interface VPOptions {
+  vcs: string[];
+  verifierDID: string;
+  nonce?: string;
+}
+
 export interface SiopOptions {
   aud: string;
   contract?: string;
@@ -30,6 +36,30 @@ export interface SiopOptions {
     ];
   };
 }
+
+export interface SiopV2Options {
+  aud: string;
+  nonce?: string;
+  state?: string;
+  nbf?: number;
+  _vp_token?: {
+    presentation_submission?: {
+      id?: string;
+      definition_id?: string;
+      descriptor_map?: {
+        path?: string;
+        id?: string;
+        format?: string;
+        path_nested?: {
+          id?: string;
+          format?: string;
+          path?: string;
+        };
+      }[];
+    };
+  };
+}
+
 export class Signer {
   did: string;
   keyPair: KeyPair;
@@ -85,7 +115,25 @@ export class Signer {
     });
   };
 
-  createVP = async (vcs: string[], verifierDID: string): Promise<string> => {
+  siopV2 = async (options: SiopV2Options): Promise<string> => {
+    return await ION.signJws({
+      header: {
+        typ: "JWT",
+        alg: "ES256K",
+        kid: `${this.did}#${DID_ION_KEY_ID}`,
+      },
+      payload: {
+        iat: moment().unix(),
+        exp: moment().add(SIOP_VALIDITY_IN_MINUTES, "minutes").unix(),
+        sub: this.did,
+        iss: "https://self-issued.me/v2/openid-vc",
+        ...options,
+      },
+      privateJwk: this.keyPair.privateJwk,
+    });
+  };
+
+  createVP = async (options: VPOptions): Promise<string> => {
     return await ION.signJws({
       header: {
         typ: "JWT",
@@ -97,14 +145,14 @@ export class Signer {
         exp: moment().add(SIOP_VALIDITY_IN_MINUTES, "minutes").unix(),
         nbf: moment().unix(),
         jti: uuidv4().toUpperCase(),
-        sub: await calculateThumbprint(this.keyPair.publicJwk),
         vp: {
           "@context": ["https://www.w3.org/2018/credentials/v1"],
           type: ["VerifiablePresentation"],
-          verifiableCredential: vcs,
+          verifiableCredential: options.vcs,
         },
         iss: this.did,
-        aud: verifierDID,
+        aud: options.verifierDID,
+        nonce: options.nonce,
       },
       privateJwk: this.keyPair.privateJwk,
     });

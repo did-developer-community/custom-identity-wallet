@@ -7,16 +7,15 @@ import React from "react";
 import { present } from "../../lib/present";
 import { Signer } from "../../lib/signer";
 import { KeyPair } from "../../lib/signer";
-import { Manifest, VCRequest } from "../../types";
+import { VCRequest } from "../../types";
 import { SelectVC } from "../molecules/PresentationSelectVC";
 import { Unlock } from "./Unlock";
 
 export interface PresentProps {
   vcRequest: VCRequest;
-  manifest: Manifest;
 }
 
-export const Present: React.FC<PresentProps> = ({ manifest, vcRequest }) => {
+export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -68,7 +67,10 @@ export const Present: React.FC<PresentProps> = ({ manifest, vcRequest }) => {
           <Button
             onClick={onOpen}
             colorScheme="blue"
-            disabled={vcRequest && presentationVCID.length < vcRequest.presentation_definition.input_descriptors.length}
+            disabled={
+              vcRequest &&
+              presentationVCID.length < vcRequest.claims.vp_token.presentation_definition.input_descriptors.length
+            }
           >
             Submit
           </Button>

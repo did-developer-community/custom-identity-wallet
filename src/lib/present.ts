@@ -1,6 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import qs from "querystring";
+import { v4 as uuidv4 } from "uuid";
 
 import { VCRequest } from "../types";
 import { getVC } from "./repository/vc";
@@ -11,6 +12,11 @@ interface Descriptor {
   path?: string;
   encoding?: string;
   format?: string;
+  path_nested?: {
+    id?: string;
+    format?: string;
+    path?: string;
+  };
 }
 
 export const present = async (presentationVCID: string[], signer: Signer, vcRequest: VCRequest): Promise<void> => {
@@ -22,34 +28,43 @@ export const present = async (presentationVCID: string[], signer: Signer, vcRequ
     const vc = getVC(key);
     vcs.push(vc.vc);
     descriptor_map.push({
-      path: `$.attestations.presentations.${vcRequest.presentation_definition.input_descriptors[0].id}`,
-      id: `${vcRequest.presentation_definition.input_descriptors[i].id}`,
-      encoding: "base64Url",
-      format: vc.format === "jwt_vc" ? "JWT" : "JSON-LD",
+      path: `$`,
+      id: `${vcRequest.claims.vp_token.presentation_definition.input_descriptors[i].id}`,
+      format: vc.format === "jwt_vc" ? "jwt_vc" : "JSON-LD",
+      path_nested: {
+        id: `${vcRequest.claims.vp_token.presentation_definition.input_descriptors[i].id}`,
+        format: vc.format === "jwt_vc" ? "jwt_vc" : "JSON-LD",
+        path: `$.verifiableCredential[${i}]`,
+      },
     });
   }
 
-  const vp = await signer.createVP(vcs, vcRequest.iss);
+  const vp = await signer.createVP({
+    vcs,
+    verifierDID: vcRequest.client_id,
+    nonce: vcRequest.nonce,
+  });
 
   // TODO: 動的に変更する
-  const attestations = {
-    presentations: { [vcRequest.presentation_definition.input_descriptors[0].id]: vp },
+  const _vp_token = {
+    presentation_submission: {
+      definition_id: vcRequest.claims.vp_token.presentation_definition.id,
+      descriptor_map,
+      id: uuidv4().toUpperCase(),
+    },
   };
 
-  const verifyRequestIdToken = await signer.siop({
-    aud: vcRequest.redirect_uri ? vcRequest.redirect_uri : vcRequest.client_id,
+  const verifyRequestIdToken = await signer.siopV2({
+    aud: vcRequest.client_id,
     nonce: vcRequest.nonce,
-    state: vcRequest.state,
-    attestations,
-    presentation_submission: {
-      descriptor_map,
-    },
-    nbf: moment().unix(),
+    _vp_token,
   });
+
   await axios.post(
     vcRequest.redirect_uri ? vcRequest.redirect_uri : vcRequest.client_id,
     qs.stringify({
       id_token: verifyRequestIdToken,
+      vp_token: vp,
       state: vcRequest.state,
     }),
     {
