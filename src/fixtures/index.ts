@@ -1,6 +1,7 @@
 import {
   AcquiredIdToken,
   Card,
+  Claim,
   Manifest,
   PresentationDefinition,
   RequiredAttestation,
@@ -18,6 +19,25 @@ export const card: Card = {
     description: "Verified Credential Expert Logo",
   },
   description: "Use your verified credential to prove to anyone that you know all about verifiable credentials.",
+};
+
+export const claim: Claim = {
+  "vc.credentialSubject.firstName": {
+    type: "string",
+    label: "firstName",
+  },
+  "vc.credentialSubject.lastName": {
+    type: "string",
+    label: "lastName",
+  },
+  "vc.credentialSubject.displayName": {
+    type: "string",
+    label: "displayName",
+  },
+  "vc.credentialSubject.sponsorName": {
+    type: "string",
+    label: "sponsorName",
+  },
 };
 
 export const requiredIdToken: RequiredToken = {
@@ -41,6 +61,7 @@ export const manifest: Manifest = {
     card,
     contract:
       "https://beta.did.msidentity.com/v1.0/3c32ed40-8a10-465b-8ba4-0b1e86882668/verifiableCredential/contracts/VerifiedCredentialExpert",
+    claims: claim,
   },
   input: {
     credentialIssuer:

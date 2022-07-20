@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react/types-6-0";
 
-import { card } from "../../fixtures";
+import { manifest } from "../../fixtures";
 import { HomeTemplate as Component, HomeTemplateProps as Props } from "./Home";
 
 export default {
@@ -12,5 +12,5 @@ const Template: Story<Props> = (args) => <Component {...args} />;
 
 export const Home = Template.bind({});
 Home.args = {
-  cards: [card, card, card],
+  manifests: [manifest, manifest, manifest],
 };

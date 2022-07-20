@@ -1,3 +1,22 @@
+export interface Claim {
+  "vc.credentialSubject.firstName": {
+    type: string;
+    label: string;
+  };
+  "vc.credentialSubject.lastName": {
+    type: string;
+    label: string;
+  };
+  "vc.credentialSubject.displayName": {
+    type: string;
+    label: string;
+  };
+  "vc.credentialSubject.sponsorName": {
+    type: string;
+    label: string;
+  };
+}
+
 export interface Card {
   title: string;
   issuedBy: string;
@@ -34,6 +53,7 @@ export interface Manifest {
   display: {
     card: Card;
     contract: string;
+    claims: Claim;
   };
   input: {
     attestations: RequiredAttestation;
