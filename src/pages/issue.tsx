@@ -30,8 +30,7 @@ const IssuePage: React.FC<IssuePageProps> = ({ queryCode, queryState }) => {
       }
       const vcRequest = JSON.parse(vcRequestString);
       const { idTokenKey, idTokenState, codeVerifier } = getAndRefreshAuthorizationContext();
-
-      const manifestUrl = vcRequest.presentation_definition.input_descriptors[0].issuance[0].manifest;
+      const manifestUrl = vcRequest.claims.vp_token.presentation_definition.input_descriptors[0].issuance[0].manifest;
       const manifestResponse = await axios.get<Manifest>(manifestUrl);
       const manifest = manifestResponse.data;
 

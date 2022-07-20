@@ -1,4 +1,4 @@
-export const QR_CUSTOME_SCHEMA = "openid://vc/";
+export const QR_CUSTOME_SCHEMA = "openid-vc://";
 export const QR_REQUEST_URI_KEY = `${QR_CUSTOME_SCHEMA}?request_uri`;
 export const PROXY_API = "/api/proxy";
 export const PROXY_TARGET_KEY = "x-proxy-target";

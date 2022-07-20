@@ -72,7 +72,7 @@ export const SelectVC: React.FC<SelectVCProps> = (props) => {
 
   return (
     <>
-      {props.vcRequest.presentation_definition.input_descriptors.map((requiredVC, i) => {
+      {props.vcRequest.claims.vp_token.presentation_definition.input_descriptors.map((requiredVC, i) => {
         return (
           <div key={i}>
             <Flex

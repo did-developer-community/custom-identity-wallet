@@ -47,6 +47,7 @@ export interface IdTokenConfiguration {
 }
 
 export interface PresentationDefinition {
+  id?: string;
   input_descriptors: {
     id: string;
     issuance: {
@@ -58,9 +59,13 @@ export interface PresentationDefinition {
 export interface VCRequest {
   prompt?: string;
   redirect_uri?: string;
-  presentation_definition: PresentationDefinition;
   nonce?: string;
   state?: string;
   client_id?: string;
   iss?: string;
+  claims?: {
+    vp_token?: {
+      presentation_definition?: PresentationDefinition;
+    };
+  };
 }

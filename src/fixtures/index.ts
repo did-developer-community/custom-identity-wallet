@@ -50,6 +50,7 @@ export const manifest: Manifest = {
 };
 
 export const presentation_definition: PresentationDefinition = {
+  id: "fixture-vc",
   input_descriptors: [
     {
       id: "fixture-vc",
@@ -65,14 +66,22 @@ export const presentation_definition: PresentationDefinition = {
 
 export const vcIssueRequest: VCRequest = {
   prompt: "create",
-  presentation_definition,
+  claims: {
+    vp_token: {
+      presentation_definition,
+    },
+  },
 };
 
 export const vcVerifyRequest: VCRequest = {
   nonce: "XZtTG335Y3IZJA",
   state: "gBoOmiUnHC5Evs3Kd2wr5jvz1KPJYe4i",
   redirect_uri: "https://6ec4-39-110-214-139.ngrok.io/presentation-response",
-  presentation_definition,
+  claims: {
+    vp_token: {
+      presentation_definition,
+    },
+  },
 };
 
 export const presentationVCID: string[] = ["fixture_vc"];

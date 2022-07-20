@@ -11,6 +11,11 @@ interface Descriptor {
   path?: string;
   encoding?: string;
   format?: string;
+  path_nested?: {
+    id?: string;
+    format?: string;
+    path?: string;
+  };
 }
 
 interface IIssueResponse {
@@ -36,14 +41,23 @@ export const issue = async (
     const vc = getVC(key);
     vcs.push(vc.vc);
     descriptor_map.push({
-      path: `$.attestations.presentations.${vcRequest.presentation_definition.input_descriptors[0].id}`,
-      id: `${vcRequest.presentation_definition.input_descriptors[i].id}`,
-      encoding: "base64Url",
-      format: vc.format === "jwt_vc" ? "JWT" : "JSON-LD",
+      path: `$`,
+      id: `${vcRequest.claims.vp_token.presentation_definition.input_descriptors[i].id}`,
+      format: vc.format === "jwt_vc" ? "jwt_vc" : "JSON-LD",
+      path_nested: {
+        id: `${vcRequest.claims.vp_token.presentation_definition.input_descriptors[i].id}`,
+        format: vc.format === "jwt_vc" ? "jwt_vc" : "JSON-LD",
+        path: `$.verifiableCredential[${i}]`,
+      },
     });
   }
   if (vcs.length !== 0) {
-    const vp = await signer.createVP(vcs, vcRequest.iss);
+    const vp = await signer.createVP({
+      vcs,
+      verifierDID: vcRequest.client_id,
+      nonce: vcRequest.nonce,
+    });
+
     // TODO: ここの部分のidの指定の仕方
     attestations = {
       ...attestations,
@@ -56,7 +70,7 @@ export const issue = async (
     contract: manifest.display.contract,
     attestations,
   });
-  console.log(issueRequestIdToken);
+
   const issueResponse = await axios.post<string, IIssueResponse>(manifest.input.credentialIssuer, issueRequestIdToken, {
     headers: { "Content-Type": "text/plain" },
   });
@@ -64,7 +78,7 @@ export const issue = async (
   const vcType = getVCTypeFromJWT(vc);
 
   // TODO: formatは動的に設定する
-  saveVC(vcRequest.presentation_definition.input_descriptors[0].issuance[0].manifest, {
+  saveVC(vcRequest.claims.vp_token.presentation_definition.input_descriptors[0].issuance[0].manifest, {
     format: "jwt_vc",
     vc: vc,
     manifest,

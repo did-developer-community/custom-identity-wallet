@@ -23,6 +23,7 @@ export const Scanner: React.FC = () => {
       return;
     }
     setIsProcessing(true);
+    console.log("QR code scanned:", message);
     const requestUrl = getRequestUrlFromQRCodeMessage(message);
     const vcRequestInJwt = await proxyHttpRequest<string>("get", requestUrl);
 
