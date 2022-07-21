@@ -9,7 +9,7 @@ import React from "react";
 
 import { CredentialCardProps } from "../../molecules/CredentialCard";
 
-const EmployeeCard: React.FC<CredentialCardProps> = ({ manifest }) => {
+const SampleCustomCard: React.FC<CredentialCardProps> = ({ manifest }) => {
   const { card, claims } = manifest.display;
 
   return (
@@ -79,4 +79,4 @@ const EmployeeCard: React.FC<CredentialCardProps> = ({ manifest }) => {
   );
 };
 
-export default EmployeeCard;
+export default SampleCustomCard;
