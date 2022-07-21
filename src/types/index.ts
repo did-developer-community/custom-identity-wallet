@@ -1,17 +1,5 @@
 export interface Claim {
-  "vc.credentialSubject.firstName": {
-    type: string;
-    label: string;
-  };
-  "vc.credentialSubject.lastName": {
-    type: string;
-    label: string;
-  };
-  "vc.credentialSubject.displayName": {
-    type: string;
-    label: string;
-  };
-  "vc.credentialSubject.sponsorName": {
+  [id: string]: {
     type: string;
     label: string;
   };
@@ -50,6 +38,7 @@ export interface AcquiredIdToken {
 }
 
 export interface Manifest {
+  id: string;
   display: {
     card: Card;
     contract: string;
