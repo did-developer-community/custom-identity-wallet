@@ -3,6 +3,7 @@ import React from "react";
 
 import { Manifest } from "../../types";
 import { CredentialCard } from "../molecules/CredentialCard";
+import EmployeeCard from "./CredentialCards/EmployeeCard";
 
 export interface CredentialDetailProps {
   manifest: Manifest;
@@ -11,7 +12,7 @@ export interface CredentialDetailProps {
 export const CredentialDetail: React.FC<CredentialDetailProps> = ({ manifest }) => {
   return (
     <Box>
-      <CredentialCard manifest={manifest} />
+      <EmployeeCard manifest={manifest} />
     </Box>
   );
 };

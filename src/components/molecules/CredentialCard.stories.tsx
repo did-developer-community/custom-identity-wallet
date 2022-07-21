@@ -4,7 +4,7 @@ import { manifest } from "../../fixtures";
 import { CredentialCard as Component, CredentialCardProps as Props } from "./CredentialCard";
 
 export default {
-  title: "Molecules/CredentialCard",
+  title: "Molecules/EmployeeCard",
   component: Component,
 } as Meta;
 
