@@ -38,6 +38,7 @@ export interface AcquiredIdToken {
 }
 
 export interface Manifest {
+  id: string;
   display: {
     card: Card;
     contract: string;
