@@ -88,4 +88,9 @@ export interface VCRequest {
       presentation_definition?: PresentationDefinition;
     };
   };
+  pin?: {
+    length?: number;
+    type?: string;
+    hash?: string;
+  };
 }

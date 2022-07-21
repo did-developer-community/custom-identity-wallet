@@ -48,8 +48,10 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
   const [pinStatus, setPinStatus] = React.useState<undefined | "success" | "no entered">(undefined);
 
   React.useEffect(() => {
-    setPinStatus("no entered");
-  }, [manifest]);
+    if (vcRequest?.pin !== undefined) {
+      setPinStatus("no entered");
+    }
+  }, [vcRequest?.pin]);
 
   const getIdToken = async (RequiredToken: RequiredToken) => {
     const idTokenConfigulation = await proxyHttpRequest<IdTokenConfiguration>("get", RequiredToken.configuration);
