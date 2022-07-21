@@ -26,53 +26,6 @@ export const CredentialCard: React.FC<CredentialCardProps> = ({ manifest }) => {
           {card.title}
         </Text>
       </Flex>
-      <Flex
-        p={"6"}
-        mb={"16"}
-        justifyContent={"left"}
-        alignItems={"center"}
-        margin={"0"}
-        paddingTop={"4px"}
-        paddingBottom={"4px"}
-      >
-        <Text fontSize={"xl"} color={card.textColor}>
-          <>
-            名前: {claims["vc.credentialSubject.lastName"].label} {claims["vc.credentialSubject.firstName"].label}
-          </>
-        </Text>
-      </Flex>
-      <Flex
-        p={"6"}
-        mb={"16"}
-        justifyContent={"left"}
-        alignItems={"center"}
-        margin={"0"}
-        paddingTop={"4px"}
-        paddingBottom={"4px"}
-      >
-        <Text fontSize={"xl"} color={card.textColor}>
-          <>表示名: {claims["vc.credentialSubject.displayName"].label}</>
-        </Text>
-      </Flex>
-      <Flex
-        p={"6"}
-        mb={"16"}
-        justifyContent={"left"}
-        alignItems={"center"}
-        margin={"0"}
-        paddingTop={"4px"}
-        paddingBottom={"4px"}
-      >
-        <Text fontSize={"xl"} color={card.textColor}>
-          <>スポンサー: {claims["vc.credentialSubject.sponsorName"].label}</>
-        </Text>
-      </Flex>
-
-      <Flex p="6" justifyContent="space-between" alignItems="center" margin={"0"}>
-        <Text fontSize="lg" color={card.textColor}>
-          {card.issuedBy}
-        </Text>
-      </Flex>
     </Box>
   );
 };
