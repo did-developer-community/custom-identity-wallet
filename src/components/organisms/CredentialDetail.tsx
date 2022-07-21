@@ -10,9 +10,14 @@ export interface CredentialDetailProps {
 }
 
 export const CredentialDetail: React.FC<CredentialDetailProps> = ({ manifest }) => {
-  return (
-    <Box>
-      <EmployeeCard manifest={manifest} />
-    </Box>
-  );
+  const renderSwitch = () => {
+    switch (manifest.id) {
+      case "sclvcdev02":
+        return <EmployeeCard manifest={manifest} />;
+      default:
+        return <CredentialCard manifest={manifest} />;
+    }
+  };
+
+  return <Box>{renderSwitch()}</Box>;
 };
