@@ -73,8 +73,8 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
       await issue(signer, vcRequest, manifest, acquiredAttestation, presentationVCID);
       router.push({ pathname: "/result", query: { type: "issue", result: "true" } });
     } catch (e) {
-      router.push({ pathname: "/result", query: { type: "issue", result: "false", errorMessage: e.message } });
-      console.log(e);
+      router.push({ pathname: "/result", query: { type: "issue", result: "false", errorMessage: "Issue Faild" } });
+      console.error(e.message);
     }
   };
 
