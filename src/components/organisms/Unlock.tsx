@@ -1,4 +1,5 @@
-import { Box, Button, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { UnlockIcon, WarningIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Heading, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
 import React from "react";
 
 import { getKeyPair } from "../../lib/repository/keyPair";
@@ -11,10 +12,15 @@ export interface UnlockProps {
 export const Unlock: React.FC<UnlockProps> = ({ onUnlock }) => {
   const [show, setShow] = React.useState(false);
   const [password, setPassword] = React.useState("");
+  const [inputError, setInputError] = React.useState("");
   const showSecret = () => setShow(!show);
   const unlock = async () => {
-    const keyPair = await getKeyPair(password);
-    onUnlock(keyPair);
+    try {
+      const keyPair = await getKeyPair(password);
+      onUnlock(keyPair);
+    } catch (e) {
+      setInputError("Invalid password");
+    }
   };
 
   return (
@@ -23,12 +29,15 @@ export const Unlock: React.FC<UnlockProps> = ({ onUnlock }) => {
         Unlock Your Wallet
       </Text>
       <Box p={"5"}>
-        <Text>Password</Text>
+        <Heading size={"md"} as="h1" marginBottom={1}>
+          Password
+        </Heading>
         <InputGroup size="md">
           <Input
             pr="4.5rem"
             type={show ? "text" : "password"}
             placeholder="Enter password"
+            isInvalid={inputError !== ""}
             onChange={(e) => setPassword(e.target.value)}
             autoCapitalize="current-password"
           />
@@ -38,9 +47,16 @@ export const Unlock: React.FC<UnlockProps> = ({ onUnlock }) => {
             </Button>
           </InputRightElement>
         </InputGroup>
+        {inputError && (
+          <Flex>
+            <WarningIcon m={1} color={"red"}></WarningIcon>
+            <Text color="red">{inputError}</Text>
+          </Flex>
+        )}
         <Box paddingTop={"12"}>
           <Button width={"100%"} rounded={"2xl"} colorScheme="blue" onClick={unlock}>
-            Unlock
+            <UnlockIcon m={1}></UnlockIcon>
+            <Text m={1}>Unlock</Text>
           </Button>
         </Box>
       </Box>
