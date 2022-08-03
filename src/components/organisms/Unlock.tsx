@@ -19,7 +19,7 @@ export const Unlock: React.FC<UnlockProps> = ({ onUnlock }) => {
       const keyPair = await getKeyPair(password);
       onUnlock(keyPair);
     } catch (e) {
-      setInputError("Invalid password");
+      setInputError("Wrong password");
     }
   };
 
