@@ -33,8 +33,8 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
       await present(presentationVCID, signer, vcRequest);
       router.push({ pathname: "/result", query: { type: "present", result: "true" } });
     } catch (e) {
-      router.push({ pathname: "/result", query: { type: "present", result: "false", errorMessage: e } });
-      console.log("ERROR: " + e.message);
+      router.push({ pathname: "/result", query: { type: "present", result: "false", errorMessage: "Present Faild" } });
+      console.error("ERROR: " + e.message);
     }
   };
 
