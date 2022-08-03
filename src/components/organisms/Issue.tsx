@@ -19,6 +19,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React from "react";
 
+import { RESULT_PAGE_PATH } from "../../configs/routing";
 import { proxyHttpRequest } from "../../lib/http";
 import { issue } from "../../lib/issue";
 import { authorize } from "../../lib/oidc";
@@ -71,10 +72,10 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
     await signer.init(keyPair);
     try {
       await issue(signer, vcRequest, manifest, acquiredAttestation, presentationVCID);
-      router.push({ pathname: "/result", query: { type: "issue", result: "true" } });
+      router.push(RESULT_PAGE_PATH + "?type=issue&result=true");
     } catch (e) {
-      router.push({ pathname: "/result", query: { type: "issue", result: "false", errorMessage: "Issue Faild" } });
-      console.error(e.message);
+      router.push(RESULT_PAGE_PATH + "?type=issue&result=false&errorMessage=" + e.message);
+      console.log(e);
     }
   };
 

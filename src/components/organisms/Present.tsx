@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
+import { RESULT_PAGE_PATH } from "../../configs/routing";
 import { present } from "../../lib/present";
 import { Signer } from "../../lib/signer";
 import { KeyPair } from "../../lib/signer";
@@ -31,10 +32,10 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
     await signer.init(keyPair);
     try {
       await present(presentationVCID, signer, vcRequest);
-      router.push({ pathname: "/result", query: { type: "present", result: "true" } });
+      router.push(RESULT_PAGE_PATH + "?type=present&result=true");
     } catch (e) {
-      router.push({ pathname: "/result", query: { type: "present", result: "false", errorMessage: "Present Faild" } });
-      console.error("ERROR: " + e.message);
+      router.push(RESULT_PAGE_PATH + "?type=present&result=false&errorMessage=" + e.message);
+      console.log("ERROR: " + e.message);
     }
   };
 
