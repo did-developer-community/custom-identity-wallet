@@ -3,14 +3,14 @@ import React from "react";
 import { Body } from "../atoms/Body";
 import { Container } from "../atoms/Container";
 import { Header } from "../organisms/Header";
-import { Scanner } from "../organisms/Scanner";
+import { LoadRequest } from "../organisms/LoadRequest";
 
-export const ScannerTemplate: React.FC = () => {
+export const LoadRequestTemplate: React.FC = () => {
   return (
     <Body>
       <Header />
-      <Container py="8">
-        <Scanner />
+      <Container py="0">
+        <LoadRequest />
       </Container>
     </Body>
   );

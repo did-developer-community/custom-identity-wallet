@@ -1,19 +1,14 @@
 import axios from "axios";
 
-import { PROXY_API, PROXY_TARGET_KEY } from "../configs/constants";
 export type HttpRequestMethod = "get" | "post";
 
 export const proxyHttpRequest = async <T>(method: HttpRequestMethod, url: string, param?: any): Promise<T> => {
   let response;
-  const configs = {
-    headers: {
-      [PROXY_TARGET_KEY]: url,
-    },
-  };
+  const configs = {};
   if (method === "get") {
-    response = await axios.get(PROXY_API, configs);
+    response = await axios.get(url, configs);
   } else if (method === "post") {
-    response = await axios.post(PROXY_API, param, configs);
+    response = await axios.post(url, param, configs);
   } else {
     throw new Error("method is invalid");
   }

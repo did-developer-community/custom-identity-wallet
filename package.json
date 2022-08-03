@@ -11,6 +11,7 @@
     "storybook": "start-storybook -p 6006 --ci",
     "dev": "next dev",
     "build": "next build",
+    "export": "next build && next export -o extensions/dist",
     "start": "next start",
     "ngrok": "ngrok http 3000"
   },
@@ -46,6 +47,7 @@
     "@storybook/addon-essentials": "^6.3.9",
     "@storybook/addon-links": "^6.3.9",
     "@storybook/react": "^6.3.9",
+    "@types/chrome": "^0.0.193",
     "@types/jest": "^27.0.2",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^16.10.2",
