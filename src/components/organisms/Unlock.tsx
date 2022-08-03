@@ -53,7 +53,7 @@ export const Unlock: React.FC<UnlockProps> = ({ onUnlock }) => {
             <Text color="red">{inputError}</Text>
           </Flex>
         )}
-        <Box paddingTop={"12"}>
+        <Box paddingTop={"5"}>
           <Button width={"100%"} rounded={"2xl"} colorScheme="blue" onClick={unlock}>
             <UnlockIcon m={1}></UnlockIcon>
             <Text m={1}>Unlock</Text>
