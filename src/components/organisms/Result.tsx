@@ -7,7 +7,7 @@ import { INDEX_PAGE_PATH } from "../../configs/routing";
 import { cleanVCRequest } from "../../lib/repository/vc";
 
 export interface ResultProps {
-  type: "issue" | "present";
+  type: "issue" | "present" | "scanner";
   result: boolean;
   errorMessage: string | undefined;
 }
