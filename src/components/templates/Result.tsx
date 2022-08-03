@@ -6,7 +6,7 @@ import { Header } from "../organisms/Header";
 import { Result } from "../organisms/Result";
 
 export interface ResultTemplateProps {
-  type: "issue" | "present";
+  type: "issue" | "present" | "scanner";
   result: boolean;
   errorMessage: string | undefined;
 }

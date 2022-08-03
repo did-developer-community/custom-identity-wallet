@@ -19,7 +19,7 @@ export const getRequestUrlFromQRCodeMessage = (message: string): string => {
   const urlSearchParams = new URLSearchParams(message);
   const requestUrl = urlSearchParams.get(QR_REQUEST_URI_KEY);
   if (!requestUrl) {
-    throw new Error("QR code does not contains request url");
+    console.error("QR code does not contains request url");
   }
   return requestUrl;
 };

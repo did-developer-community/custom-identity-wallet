@@ -25,17 +25,23 @@ export const Scanner: React.FC = () => {
     setIsProcessing(true);
     console.log("QR code scanned:", message);
     const requestUrl = getRequestUrlFromQRCodeMessage(message);
-    const vcRequestInJwt = await proxyHttpRequest<string>("get", requestUrl);
+    let vcRequestInJwt = "";
+    let vcRequestVerified = "";
+    try {
+      vcRequestInJwt = await proxyHttpRequest<string>("get", requestUrl);
+      const header = getProtectedHeaderFromVCRequest(vcRequestInJwt);
+      const issDIDDocument = await ION.resolve(header.kid);
+      vcRequestVerified = await ION.verifyJws({
+        jws: vcRequestInJwt,
+        publicJwk: issDIDDocument.didDocument.verificationMethod[0].publicKeyJwk,
+      });
+    } catch (e) {
+      router.push({
+        pathname: "/result",
+        query: { type: "scanner", result: "false", errorMessage: "This QR code is not suitable" },
+      });
+    }
 
-    /**
-     * TODO: エラー発生時にエラーページに遷移する
-     */
-    const header = getProtectedHeaderFromVCRequest(vcRequestInJwt);
-    const issDIDDocument = await ION.resolve(header.kid);
-    const vcRequestVerified = await ION.verifyJws({
-      jws: vcRequestInJwt,
-      publicJwk: issDIDDocument.didDocument.verificationMethod[0].publicKeyJwk,
-    });
     if (!vcRequestVerified) {
       return {
         redirect: {
