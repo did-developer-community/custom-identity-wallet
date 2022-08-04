@@ -3,6 +3,7 @@ import { Box, Button, Center, Container, Flex, Spacer, Spinner, Text } from "@ch
 import { useRouter } from "next/router";
 import React from "react";
 
+import { INDEX_PAGE_PATH } from "../../configs/routing";
 import { cleanVCRequest } from "../../lib/repository/vc";
 
 export interface ResultProps {
@@ -64,7 +65,7 @@ export const Result: React.FC<ResultProps> = ({ type, result, errorMessage }) =>
           colorScheme="blue"
           onClick={() => {
             cleanVCRequest();
-            router.push("/");
+            router.push(INDEX_PAGE_PATH);
           }}
         >
           OK

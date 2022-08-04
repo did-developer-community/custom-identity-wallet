@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
+import { INDEX_PAGE_PATH, RESULT_PAGE_PATH } from "../../configs/routing";
 import { present } from "../../lib/present";
 import { Signer } from "../../lib/signer";
 import { KeyPair } from "../../lib/signer";
@@ -31,10 +32,10 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
     await signer.init(keyPair);
     try {
       await present(presentationVCID, signer, vcRequest);
-      router.push({ pathname: "/result", query: { type: "present", result: "true" } });
+      router.push(RESULT_PAGE_PATH + "?type=present&result=true");
     } catch (e) {
-      router.push({ pathname: "/result", query: { type: "present", result: "false", errorMessage: "Present Faild" } });
-      console.error("ERROR: " + e.message);
+      router.push(RESULT_PAGE_PATH + "?type=present&result=false&errorMessage=" + e.message);
+      console.log("ERROR: " + e.message);
     }
   };
 
@@ -59,7 +60,7 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
 
       <Box px="2">
         <Grid templateColumns="repeat(2, 1fr)" gap="4">
-          <Link as={NextLink} href="/">
+          <Link as={NextLink} href={INDEX_PAGE_PATH}>
             <>
               <Button>Cancel</Button>
             </>
