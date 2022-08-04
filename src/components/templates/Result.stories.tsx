@@ -9,4 +9,4 @@ export default {
 
 const Template: Story<Props> = (args) => <Component {...args} />;
 
-export const Result = Template.bind({});
+export const Scanner = Template.bind({});
