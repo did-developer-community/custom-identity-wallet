@@ -57,6 +57,7 @@ export const acquiredIdToken: AcquiredIdToken = {
 };
 
 export const manifest: Manifest = {
+  id: "sclvcdev02",
   display: {
     card,
     contract:

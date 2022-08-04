@@ -1,8 +1,8 @@
-import { Grid } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import React from "react";
 
 import { Manifest } from "../../types";
-import { CredentialCard } from "../molecules/CredentialCard";
+import { CredentialSummery } from "./CredentialSummary";
 
 export interface CredentialListProps {
   manifests: Manifest[];
@@ -11,8 +11,12 @@ export interface CredentialListProps {
 export const CredentialList: React.FC<CredentialListProps> = ({ manifests }) => {
   return (
     <Grid gap={4}>
-      {manifests.map((manifest, i) => {
-        return <CredentialCard key={i} manifest={manifest} />; // todo keyにindexはアンチパターン
+      {manifests.map((manifest) => {
+        return (
+          <Box key={manifest.display.contract} marginY={4} textAlign={"center"}>
+            <CredentialSummery card={manifest.display.card} />
+          </Box>
+        );
       })}
     </Grid>
   );
