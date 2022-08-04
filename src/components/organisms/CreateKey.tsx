@@ -30,7 +30,7 @@ export const CreateKey: React.FC = () => {
             pr="4.5rem"
             type={show ? "text" : "password"}
             placeholder="Enter password"
-            onChange={(e) => setPasswords({ password: e.target.value, ...passwords })}
+            onChange={(e) => setPasswords({ ...passwords, password: e.target.value })}
             autoComplete="new-password"
           />
           <InputRightElement width="4.5rem">
@@ -45,7 +45,7 @@ export const CreateKey: React.FC = () => {
             pr="4.5rem"
             type={show ? "text" : "password"}
             placeholder="Enter password"
-            onChange={(e) => setPasswords({ passwordConfirmation: e.target.value, ...passwords })}
+            onChange={(e) => setPasswords({ ...passwords, passwordConfirmation: e.target.value })}
             autoComplete="new-password"
           />
           <InputRightElement width="4.5rem">

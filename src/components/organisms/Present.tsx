@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
-import { RESULT_PAGE_PATH } from "../../configs/routing";
+import { INDEX_PAGE_PATH, RESULT_PAGE_PATH } from "../../configs/routing";
 import { present } from "../../lib/present";
 import { Signer } from "../../lib/signer";
 import { KeyPair } from "../../lib/signer";
@@ -60,7 +60,7 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
 
       <Box px="2">
         <Grid templateColumns="repeat(2, 1fr)" gap="4">
-          <Link as={NextLink} href="/">
+          <Link as={NextLink} href={INDEX_PAGE_PATH}>
             <>
               <Button>Cancel</Button>
             </>

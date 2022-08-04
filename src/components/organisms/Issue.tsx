@@ -19,7 +19,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React from "react";
 
-import { RESULT_PAGE_PATH } from "../../configs/routing";
+import { INDEX_PAGE_PATH, RESULT_PAGE_PATH } from "../../configs/routing";
 import { proxyHttpRequest } from "../../lib/http";
 import { issue } from "../../lib/issue";
 import { authorize } from "../../lib/oidc";
@@ -169,7 +169,7 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
 
             <Box px="4">
               <Grid templateColumns="repeat(2, 1fr)" gap="4">
-                <Link href="/">
+                <Link href={INDEX_PAGE_PATH}>
                   <Button w="100%">Cancel</Button>
                 </Link>
                 <Button
