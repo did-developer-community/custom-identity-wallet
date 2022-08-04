@@ -1,20 +1,26 @@
 import { Box, Grid } from "@chakra-ui/react";
 import React from "react";
 
-import { Manifest } from "../../types";
-import { CredentialSummery } from "./CredentialSummary";
+import { StoredVC } from "../../lib/repository/vc";
+import { CredentialCard } from "../molecules/CredentialCard";
 
 export interface CredentialListProps {
-  manifests: Manifest[];
+  storedVCs: StoredVC[];
 }
 
-export const CredentialList: React.FC<CredentialListProps> = ({ manifests }) => {
+export const CredentialList: React.FC<CredentialListProps> = ({ storedVCs }) => {
   return (
     <Grid gap={4}>
-      {manifests.map((manifest) => {
+      {storedVCs.map((storedVC) => {
         return (
-          <Box key={manifest.display.contract} marginY={4} textAlign={"center"}>
-            <CredentialSummery card={manifest.display.card} />
+          <Box key={storedVC.manifest.display.contract}>
+            <Box
+              onClick={() => {
+                // TODO: CredentialDetailに遷移する
+              }}
+            >
+              <CredentialCard storedVC={storedVC} />
+            </Box>
           </Box>
         );
       })}

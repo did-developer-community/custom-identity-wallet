@@ -12,6 +12,7 @@ export interface JWTHeader {
 export interface VCData {
   vc: {
     type: string[];
+    credentialSubject: Record<string, string>;
   };
 }
 
@@ -42,7 +43,13 @@ export const getRequestFromVCRequest = (
   };
 };
 
+/// TODO:VCをデコードする関数に置き換える
 export const getVCTypeFromJWT = (jwt: string): string[] => {
   const vcData = <VCData>jsonwebtoken.decode(jwt);
   return vcData.vc.type;
+};
+
+export const decodeJWTToVCData = (jwt: string): VCData => {
+  const vcData = <VCData>jsonwebtoken.decode(jwt);
+  return vcData;
 };

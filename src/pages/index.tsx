@@ -3,11 +3,10 @@ import React from "react";
 
 import { HomeTemplate } from "../components/templates/Home";
 import { isExistKeyPair } from "../lib/repository/keyPair";
-import { getVCs } from "../lib/repository/vc";
-import { Manifest } from "../types";
+import { getVCs, StoredVC } from "../lib/repository/vc";
 
 const IndexPage: React.FC = () => {
-  const [manifests, setManifests] = React.useState<Manifest[]>([]);
+  const [storedVCs, setStoredVCs] = React.useState<StoredVC[]>([]);
   const router = useRouter();
   React.useEffect(() => {
     if (!isExistKeyPair()) {
@@ -15,14 +14,14 @@ const IndexPage: React.FC = () => {
     }
     const vcs = getVCs();
     if (vcs) {
-      const manifestList = Object.values(vcs).map((vc) => {
-        return vc.manifest;
+      const storedVCs = Object.values(vcs).map((storedVC) => {
+        return storedVC;
       });
-      setManifests(manifestList);
+      setStoredVCs(storedVCs);
     }
   }, [router]);
 
-  return <HomeTemplate manifests={manifests} />;
+  return <HomeTemplate storedVCs={storedVCs} />;
 };
 
 export default IndexPage;
