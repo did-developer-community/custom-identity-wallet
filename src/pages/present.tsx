@@ -2,7 +2,6 @@ import React from "react";
 
 import { PresentTemplate } from "../components/templates/Present";
 import { LOCAL_STORAGE_VC_REQUEST_KEY } from "../configs/constants";
-import { LOAD_REQUEST_PAGE_PATH } from "../configs/routing";
 import { VCRequest } from "../types";
 
 const PresentPage: React.FC = () => {
@@ -14,7 +13,7 @@ const PresentPage: React.FC = () => {
       if (!vcRequestString) {
         return {
           redirect: {
-            destination: LOAD_REQUEST_PAGE_PATH,
+            destination: "/scanner",
             permanent: false,
           },
         };

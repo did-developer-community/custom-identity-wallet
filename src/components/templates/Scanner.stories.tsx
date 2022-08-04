@@ -1,13 +1,12 @@
 import { Meta, Story } from "@storybook/react/types-6-0";
 
-import { LoadRequestTemplate as Component } from "./LoadRequest";
+import { ScannerTemplate as Component } from "./Scanner";
 
 export default {
-  title: "Templates/LoadRequest",
+  title: "Templates/Scanner",
   component: Component,
 } as Meta;
 
 const Template: Story = (args) => <Component {...args} />;
 
-export const LoadRequest = Template.bind({});
-LoadRequest.args = {};
+export const Scanner = Template.bind({});
