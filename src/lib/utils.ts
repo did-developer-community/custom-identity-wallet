@@ -1,7 +1,7 @@
 import jsonwebtoken from "jsonwebtoken";
 
 import { QR_REQUEST_URI_KEY } from "../configs/constants";
-import { VCRequest } from "../types";
+import { Manifest, VCRequest } from "../types";
 
 export type VCRequestType = "issue" | "present";
 
@@ -45,4 +45,13 @@ export const getRequestFromVCRequest = (
 export const getVCTypeFromJWT = (jwt: string): string[] => {
   const vcData = <VCData>jsonwebtoken.decode(jwt);
   return vcData.vc.type;
+};
+
+export const decodeJWTToVCData = (jwt: string): VCData => {
+  const vcData = <VCData>jsonwebtoken.decode(jwt);
+  return vcData;
+};
+
+export const getManifestFromJWT = (jwt: string): Manifest => {
+  return <Manifest>jsonwebtoken.decode(jwt);
 };
