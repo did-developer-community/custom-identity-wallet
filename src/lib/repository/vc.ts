@@ -1,26 +1,27 @@
 import { LOCAL_STORAGE_VC, LOCAL_STORAGE_VC_REQUEST_KEY } from "../../configs/constants";
 import { Manifest } from "../../types";
 
-export interface VC {
+export interface StoredVC {
   format?: string;
   type: string[];
   vc: string;
   manifest: Manifest;
+  credentialSubject: Record<string, string>;
 }
 
 export interface VCList {
-  [key: string]: VC;
+  [key: string]: StoredVC;
 }
 
 export const getVCs = (): VCList => {
   return JSON.parse(localStorage.getItem(LOCAL_STORAGE_VC));
 };
 
-export const getVC = (key: string): VC => {
+export const getVC = (key: string): StoredVC => {
   return JSON.parse(localStorage.getItem(LOCAL_STORAGE_VC))[key];
 };
 
-export const getVCsByType = (VCID: string): { [key: string]: VC } => {
+export const getVCsByType = (VCID: string): { [key: string]: StoredVC } => {
   const VCs = getVCs();
   // Typeに一致するVCを取得
   let result = {};
@@ -32,7 +33,7 @@ export const getVCsByType = (VCID: string): { [key: string]: VC } => {
   return result;
 };
 
-export const saveVC = (key: string, vc: VC): void => {
+export const saveVC = (key: string, vc: StoredVC): void => {
   localStorage.setItem(
     LOCAL_STORAGE_VC,
     JSON.stringify({

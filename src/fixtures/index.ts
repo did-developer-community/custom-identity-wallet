@@ -1,3 +1,4 @@
+import { StoredVC } from "../lib/repository/vc";
 import {
   AcquiredIdToken,
   Card,
@@ -107,3 +108,11 @@ export const vcVerifyRequest: VCRequest = {
 };
 
 export const presentationVCID: string[] = ["fixture_vc"];
+
+export const storedVC: StoredVC = {
+  format: "jwt_vc",
+  type: ["VerifiedCredentialExpert"],
+  vc: "",
+  manifest: manifest,
+  credentialSubject: {},
+};

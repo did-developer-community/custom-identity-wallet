@@ -24,8 +24,8 @@ import { issue } from "../../lib/issue";
 import { authorize } from "../../lib/oidc";
 import { KeyPair, Signer } from "../../lib/signer";
 import { AcquiredIdToken, IdTokenConfiguration, Manifest, RequiredToken, VCRequest } from "../../types";
-import { CredentialCard } from "../molecules/CredentialCard";
 import { SelectVC } from "../molecules/IssueanceSelectVC";
+import { PreviewCredentialCard } from "../molecules/PreviewCredentialCard";
 import { Unlock } from "./Unlock";
 const PinInput = dynamic(() => import("react-pin-input"), { ssr: false });
 
@@ -91,7 +91,7 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
         acquiredAttestation && (
           <>
             <Box px="4" mb="8">
-              <CredentialCard manifest={manifest} />
+              <PreviewCredentialCard manifest={manifest} />
             </Box>
             <Box mb="8">
               {manifest.input.attestations.idTokens.map((idToken, i) => {
