@@ -16,7 +16,7 @@ import {
 import { BadgeCheckIcon, CheckIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
 
-import { getVCsByType, VC } from "../../lib/repository/vc";
+import { getVCsByType, StoredVC } from "../../lib/repository/vc";
 import { Manifest } from "../../types";
 import { CredentialCard } from "./CredentialCard";
 
@@ -28,8 +28,7 @@ export interface SelectVCProps {
 
 export const SelectVC: React.FC<SelectVCProps> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const fulfilled = undefined;
-  const [selectedVC, setSelectedVC] = React.useState<VC>();
+  const [selectedVC, setSelectedVC] = React.useState<StoredVC>();
 
   const SelectiveVC = (props: {
     requiredVC: { credentialType: string };
@@ -51,7 +50,7 @@ export const SelectVC: React.FC<SelectVCProps> = (props) => {
       <>
         <List>
           {Object.keys(vcs).map((vcID, index) => {
-            const vcData = vcs[vcID];
+            const storedVC = vcs[vcID];
             return (
               <ListItem key={index}>
                 <Box
@@ -59,7 +58,7 @@ export const SelectVC: React.FC<SelectVCProps> = (props) => {
                     hundleClick(vcID);
                   }}
                 >
-                  <CredentialCard manifest={vcData.manifest} />
+                  <CredentialCard storedVC={storedVC} />
                   {props.presentationVCID.includes(vcID) && <Icon w="4" h="4" color="green.400" as={CheckIcon} />}
                 </Box>
               </ListItem>

@@ -4,7 +4,7 @@ import { AcquiredIdToken, Manifest, VCRequest } from "../types";
 import { saveVC } from "./repository/vc";
 import { getVC } from "./repository/vc";
 import { Signer } from "./signer";
-import { getVCTypeFromJWT } from "./utils";
+import { decodeJWTToVCData } from "./utils";
 
 interface Descriptor {
   id?: string;
@@ -75,14 +75,15 @@ export const issue = async (
     headers: { "Content-Type": "text/plain" },
   });
   const vc = issueResponse.data.vc;
-  const vcType = getVCTypeFromJWT(vc);
+  const vcDecodedData = decodeJWTToVCData(vc);
 
   // TODO: formatは動的に設定する
   saveVC(vcRequest.claims.vp_token.presentation_definition.input_descriptors[0].issuance[0].manifest, {
     format: "jwt_vc",
     vc: vc,
     manifest,
-    type: vcType,
+    type: vcDecodedData.vc.type,
+    credentialSubject: vcDecodedData.vc.credentialSubject,
   });
   await axios.post(vcRequest.redirect_uri ? vcRequest.redirect_uri : vcRequest.client_id, {
     state: vcRequest.state,
