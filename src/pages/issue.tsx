@@ -1,10 +1,12 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import React from "react";
 
 import { IssueTemplate } from "../components/templates/Issue";
 import { LOCAL_STORAGE_VC_REQUEST_KEY } from "../configs/constants";
 import { getAndRefreshAuthorizationContext } from "../lib/oidc";
+import { getManifestFromJWT } from "../lib/utils";
 import { AcquiredIdToken, Manifest, VCRequest } from "../types";
 
 interface IssuePageProps {
@@ -16,6 +18,7 @@ const IssuePage: React.FC<IssuePageProps> = ({ queryCode, queryState }) => {
   const [vcRequest, setVcRequest] = React.useState<VCRequest>();
   const [manifest, setManifest] = React.useState<Manifest>();
   const [acquiredAttestation, setAcquiredAttestation] = React.useState<AcquiredIdToken>();
+  const router = useRouter();
 
   React.useEffect(() => {
     (async () => {
@@ -30,10 +33,31 @@ const IssuePage: React.FC<IssuePageProps> = ({ queryCode, queryState }) => {
       }
       const vcRequest = JSON.parse(vcRequestString);
       const { idTokenKey, idTokenState, codeVerifier } = getAndRefreshAuthorizationContext();
-      const manifestUrl = vcRequest.claims.vp_token.presentation_definition.input_descriptors[0].issuance[0].manifest;
-      const manifestResponse = await axios.get<Manifest>(manifestUrl);
-      const manifest = manifestResponse.data;
+      const manifestUrl = new URL(
+        vcRequest.claims.vp_token.presentation_definition.input_descriptors[0].issuance[0].manifest
+      );
+      let manifest: Manifest;
 
+      try {
+        if (manifestUrl.hostname == "verifiedid.did.msidentity.com") {
+          const manifestToken = await axios.get<{ token: string }>(manifestUrl.toString()).then((res) => {
+            return res.data.token;
+          });
+          console.log("manifestToken", manifestToken);
+          manifest = getManifestFromJWT(manifestToken);
+        } else if (manifestUrl.hostname == "beta.did.msidentity.com") {
+          // This is Beta issuer.
+          manifest = await axios.get<Manifest>(manifestUrl.toString()).then((res) => {
+            return res.data;
+          });
+        }
+      } catch (e) {
+        router.push({
+          pathname: "/result",
+          query: { type: "issue", result: "false", errorMessage: "Get Manifest Faild" },
+        });
+        console.error(e);
+      }
       const acquiredAttestation = {};
 
       // TODO: ここの部分の分岐を整理する
@@ -66,7 +90,7 @@ const IssuePage: React.FC<IssuePageProps> = ({ queryCode, queryState }) => {
       setManifest(manifest);
       setAcquiredAttestation(acquiredAttestation);
     })();
-  }, [queryCode, queryState]);
+  }, [queryCode, queryState, router]);
   return <IssueTemplate vcRequest={vcRequest} manifest={manifest} acquiredAttestation={acquiredAttestation} />;
 };
 
