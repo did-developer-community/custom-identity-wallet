@@ -12,6 +12,6 @@ const Template: Story<Props> = (args) => <Component {...args} />;
 
 export const PresentationSelectVC = Template.bind({});
 PresentationSelectVC.args = {
-  vcVerifyRequest,
+  vcRequest: vcVerifyRequest,
   presentationVCID,
 };
