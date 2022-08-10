@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react/types-6-0";
 
-import { manifest } from "../../fixtures";
+import { storedVC } from "../../fixtures";
 import { CredentialList as Component, CredentialListProps as Props } from "./CredentialList";
 
 export default {
@@ -11,6 +11,4 @@ export default {
 const Template: Story<Props> = (args) => <Component {...args} />;
 
 export const CredentialList = Template.bind({});
-CredentialList.args = {
-  manifests: [manifest, manifest, manifest],
-};
+CredentialList.args = { storedVCs: [storedVC, storedVC] };

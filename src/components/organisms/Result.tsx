@@ -22,9 +22,11 @@ export const Result: React.FC<ResultProps> = ({ type, result, errorMessage }) =>
               <CheckIcon w={20} h={20} color={"green.300"} />
             </Center>
             <Container>
-              <Text fontSize={20} fontWeight={"bold"}>
-                Success!
-              </Text>
+              <Box paddingTop={10} paddingBottom={10}>
+                <Text fontSize={20} fontWeight={"bold"} textAlign={"center"}>
+                  Success!
+                </Text>
+              </Box>
             </Container>
           </Box>
         </>
@@ -37,7 +39,15 @@ export const Result: React.FC<ResultProps> = ({ type, result, errorMessage }) =>
               <CloseIcon w={20} h={20} color={"red.300"} />
             </Center>
             <Container maxW="2xl">
-              <Text fontSize={"2xl"}>Error : {errorMessage}</Text>
+              <Box paddingTop={10} paddingBottom={10}>
+                <Text fontSize={20} fontWeight={"bold"} textAlign={"center"}>
+                  Sorry...😢 <br />
+                  Something went wrong.
+                </Text>
+                <Text fontSize={15} color="red" paddingTop={"5"}>
+                  Error : {errorMessage}
+                </Text>
+              </Box>
             </Container>
           </Box>
         </>
@@ -47,29 +57,33 @@ export const Result: React.FC<ResultProps> = ({ type, result, errorMessage }) =>
 
   return (
     <>
-      {console.log(type)}
-      {type === undefined ? (
-        <>
-          <Center>
-            <Spinner />
-          </Center>
-        </>
-      ) : (
-        <ResultDescription />
-      )}
-      <Flex>
-        <Spacer />
-        <Button
-          mr="4"
-          colorScheme="blue"
-          onClick={() => {
-            cleanVCRequest();
-            router.push("/");
-          }}
-        >
-          OK
-        </Button>
-      </Flex>
+      <Box p={4}>
+        <Box paddingTop={"18"} />
+        {type === undefined ? (
+          <Box paddingTop={"20"} paddingBottom={"15"}>
+            <Center>
+              <Spinner />
+            </Center>
+          </Box>
+        ) : (
+          <>
+            <Flex>
+              <Spacer />
+              <Button
+                mr="4"
+                colorScheme="blue"
+                onClick={() => {
+                  cleanVCRequest();
+                  router.push("/");
+                }}
+              >
+                OK
+              </Button>
+            </Flex>
+            <ResultDescription />
+          </>
+        )}
+      </Box>
     </>
   );
 };
