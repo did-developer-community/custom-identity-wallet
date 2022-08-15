@@ -119,3 +119,6 @@ dist
 
 .DS_Store
 
+# Next.js build output (next-pwa)
+public/sw.js
+public/workbox-*.js
