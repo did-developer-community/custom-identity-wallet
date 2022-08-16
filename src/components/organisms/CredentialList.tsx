@@ -15,6 +15,8 @@ export const CredentialList: React.FC<CredentialListProps> = ({ storedVCs }) => 
         return (
           <Box key={storedVC.manifest.display.contract}>
             <Box
+              cursor={"pointer"}
+              _hover={{ opacity: 0.9, transition: "0.2s" }}
               onClick={() => {
                 // TODO: CredentialDetailに遷移する
               }}
