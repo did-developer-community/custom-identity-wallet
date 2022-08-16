@@ -18,8 +18,12 @@ export const CredentialList: React.FC = () => {
               cursor={"pointer"}
               _hover={{ opacity: 0.9, transition: "0.2s" }}
               onClick={() => {
-                router.push("./detail");
-                // TODO: CredentialDetailに遷移する
+                router.push({
+                  pathname: "/detail",
+                  query: {
+                    id: storedVC.vc,
+                  },
+                });
               }}
             >
               <CredentialCard storedVC={storedVC} />
