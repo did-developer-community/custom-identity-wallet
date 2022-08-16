@@ -14,7 +14,7 @@ export interface HomeTemplateProps {
 export const HomeTemplate: React.FC<HomeTemplateProps> = ({ storedVCs }) => {
   return (
     <Body>
-      <Header />
+      <Header showHomeIcon={true} showQrcodeIcon={true} />
       <Container py="8">
         <Box px="4">
           <CredentialList storedVCs={storedVCs} />

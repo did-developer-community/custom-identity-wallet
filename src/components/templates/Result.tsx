@@ -14,7 +14,7 @@ export interface ResultTemplateProps {
 export const ResultTemplate: React.FC<ResultTemplateProps> = ({ type, result, errorMessage }) => {
   return (
     <Body>
-      <Header />
+      <Header showHomeIcon={true} />
       <Container py="8">
         <Result type={type} result={result} errorMessage={errorMessage} />
       </Container>

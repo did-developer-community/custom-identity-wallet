@@ -1,4 +1,5 @@
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 import { AcquiredIdToken, Manifest, VCRequest } from "../types";
 import { saveVC } from "./repository/vc";
@@ -78,7 +79,10 @@ export const issue = async (
   const vcDecodedData = decodeJWTToVCData(vc);
 
   // TODO: formatは動的に設定する
-  saveVC(vcRequest.claims.vp_token.presentation_definition.input_descriptors[0].issuance[0].manifest, {
+  // TODO: VCのIDは要検討
+  const storedVCID = uuidv4().toUpperCase();
+  saveVC(storedVCID, {
+    id: storedVCID,
     format: "jwt_vc",
     vc: vc,
     manifest,

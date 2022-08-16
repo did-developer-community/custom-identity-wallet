@@ -13,7 +13,7 @@ export interface PresentTemplateProps {
 export const PresentTemplate: React.FC<PresentTemplateProps> = ({ vcRequest }) => {
   return (
     <Body>
-      <Header />
+      <Header showHomeIcon={true} />
       <Container py="0">
         <Present vcRequest={vcRequest} />
       </Container>

@@ -2,6 +2,7 @@ import { LOCAL_STORAGE_VC, LOCAL_STORAGE_VC_REQUEST_KEY } from "../../configs/co
 import { Manifest } from "../../types";
 
 export interface StoredVC {
+  id: string;
   format?: string;
   type: string[];
   vc: string;

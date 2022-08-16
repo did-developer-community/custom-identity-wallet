@@ -1,4 +1,5 @@
 import { Box, Grid } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React from "react";
 
 import { StoredVC } from "../../lib/repository/vc";
@@ -9,6 +10,7 @@ export interface CredentialListProps {
 }
 
 export const CredentialList: React.FC<CredentialListProps> = ({ storedVCs }) => {
+  const router = useRouter();
   return (
     <Grid gap={4}>
       {storedVCs.map((storedVC) => {
@@ -16,7 +18,7 @@ export const CredentialList: React.FC<CredentialListProps> = ({ storedVCs }) => 
           <Box key={storedVC.manifest.display.contract}>
             <Box
               onClick={() => {
-                // TODO: CredentialDetailに遷移する
+                router.push(`/credentialDetail/${storedVC.id}`);
               }}
             >
               <CredentialCard storedVC={storedVC} />
@@ -27,3 +29,5 @@ export const CredentialList: React.FC<CredentialListProps> = ({ storedVCs }) => 
     </Grid>
   );
 };
+
+export default CredentialList;
