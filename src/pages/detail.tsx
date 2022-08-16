@@ -14,7 +14,6 @@ const Detail = () => {
     return storedVCs[0];
   }, [storedVCs]);
 
-  console.log(storedVC.credentialSubject);
   return <Box padding={10}>{storedVC && <CredentialCard storedVC={storedVC} />}</Box>;
 };
 
