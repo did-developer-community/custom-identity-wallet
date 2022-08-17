@@ -25,7 +25,7 @@ export const Unlock: React.FC<UnlockProps> = ({ onUnlock }) => {
 
   return (
     <>
-      <Text textAlign="center" fontSize="3xl" fontWeight="bold">
+      <Text m={"3"} textAlign="center" fontSize="3xl" fontWeight="bold">
         Unlock Your Wallet
       </Text>
       <Box p={"5"}>
