@@ -30,15 +30,15 @@ export const issue = async (
   vcRequest: VCRequest,
   manifest: Manifest,
   acquiredIdToken: AcquiredIdToken,
-  presentationVCID: string[]
+  presentationVCIDs: string[]
 ): Promise<void> => {
   const vcs = [];
   let attestations: any = { ...acquiredIdToken };
 
   const descriptor_map: [Descriptor?] = [];
-  for (let i = 0; presentationVCID.length > i; i++) {
+  for (let i = 0; presentationVCIDs.length > i; i++) {
     // 選択したVCを抽出する
-    const key = presentationVCID[i];
+    const key = presentationVCIDs[i];
     const vc = getVC(key);
     vcs.push(vc.vc);
     descriptor_map.push({
@@ -59,7 +59,7 @@ export const issue = async (
       nonce: vcRequest.nonce,
     });
 
-    // TODO: ここの部分のidの指定の仕方
+    // TODO: ここの部分のidの指定の仕方 credentialTypeなのかidなのか
     attestations = {
       ...attestations,
       presentations: { [manifest.input.attestations.presentations[0].credentialType]: vp },
@@ -88,6 +88,7 @@ export const issue = async (
     manifest,
     type: vcDecodedData.vc.type,
     credentialSubject: vcDecodedData.vc.credentialSubject,
+    vcHistory: [{ timestamp: Date.now(), message: "Certificate issued." }],
   });
   await axios.post(vcRequest.redirect_uri ? vcRequest.redirect_uri : vcRequest.client_id, {
     state: vcRequest.state,

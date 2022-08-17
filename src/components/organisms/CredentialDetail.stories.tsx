@@ -1,16 +1,13 @@
 import { Meta, Story } from "@storybook/react/types-6-0";
 
-import { manifest } from "../../fixtures";
-import { CredentialDetail as Component, CredentialDetailProps as Props } from "./CredentialDetail";
+import { CredentialDetail as Component } from "./CredentialDetail";
 
 export default {
-  title: "Organisms/Credential Detail",
+  title: "Organisms/CredentialDetail",
   component: Component,
 } as Meta;
 
-const Template: Story<Props> = (args) => <Component {...args} />;
+const Template: Story = (args) => <Component {...args} />;
 
 export const CredentialDetail = Template.bind({});
-CredentialDetail.args = {
-  manifest,
-};
+CredentialDetail.args = {};

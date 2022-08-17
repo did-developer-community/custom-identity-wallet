@@ -8,6 +8,12 @@ export interface StoredVC {
   vc: string;
   manifest: Manifest;
   credentialSubject: Record<string, string>;
+  vcHistory?: VCHistory[];
+}
+
+export interface VCHistory {
+  timestamp: number;
+  message: string;
 }
 
 export interface VCList {
@@ -49,7 +55,16 @@ export const cleanVCRequest = (): void => {
 };
 
 export const deleteVC = (key: string): void => {
-  const vc = localStorage.getItem(LOCAL_STORAGE_VC);
-  delete vc[key];
-  localStorage.setItem(LOCAL_STORAGE_VC, JSON.stringify(vc));
+  const VCs = getVCs();
+  delete VCs[key];
+  localStorage.setItem(LOCAL_STORAGE_VC, JSON.stringify(VCs));
+  if (VCs === {}) {
+    localStorage.setItem(LOCAL_STORAGE_VC, undefined);
+  }
+};
+
+export const addVCHistory = (key: string, message: string): void => {
+  let vc = getVC(key);
+  vc = { ...vc, vcHistory: [...vc.vcHistory, { timestamp: Date.now(), message }] };
+  saveVC(key, vc);
 };

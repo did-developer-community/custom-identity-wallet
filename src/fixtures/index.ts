@@ -107,7 +107,7 @@ export const vcVerifyRequest: VCRequest = {
   },
 };
 
-export const presentationVCID: string[] = ["fixture_vc"];
+export const presentationVCIDs: string[] = ["fixture_vc"];
 
 export const storedVC: StoredVC = {
   id: "0B9E8006-C5B3-4041-B65D-7F405CDB4F8D",

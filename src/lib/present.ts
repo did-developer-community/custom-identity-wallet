@@ -1,5 +1,4 @@
 import axios from "axios";
-import moment from "moment";
 import qs from "querystring";
 import { v4 as uuidv4 } from "uuid";
 
@@ -19,12 +18,12 @@ interface Descriptor {
   };
 }
 
-export const present = async (presentationVCID: string[], signer: Signer, vcRequest: VCRequest): Promise<void> => {
+export const present = async (presentationVCIDs: string[], signer: Signer, vcRequest: VCRequest): Promise<void> => {
   const vcs = [];
   const descriptor_map: [Descriptor?] = [];
-  for (let i = 0; presentationVCID.length > i; i++) {
+  for (let i = 0; presentationVCIDs.length > i; i++) {
     // 選択したVCを抽出する
-    const key = presentationVCID[i];
+    const key = presentationVCIDs[i];
     const vc = getVC(key);
     vcs.push(vc.vc);
     descriptor_map.push({
@@ -45,7 +44,6 @@ export const present = async (presentationVCID: string[], signer: Signer, vcRequ
     nonce: vcRequest.nonce,
   });
 
-  // TODO: 動的に変更する
   const _vp_token = {
     presentation_submission: {
       definition_id: vcRequest.claims.vp_token.presentation_definition.id,

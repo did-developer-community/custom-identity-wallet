@@ -22,27 +22,23 @@ import { CredentialCard } from "./CredentialCard";
 
 export interface SelectVCProps {
   vcRequest: VCRequest;
-  presentationVCID: string[];
-  setPresentationVCID: React.Dispatch<React.SetStateAction<string[]>>;
+  presentationVCIDs: string[];
+  setPresentationVCIDs: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export const SelectVC: React.FC<SelectVCProps> = (props) => {
+export const SelectVC: React.FC<SelectVCProps> = ({ vcRequest, presentationVCIDs, setPresentationVCIDs }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedVC, setSelectedVC] = React.useState<StoredVC>();
-
-  const SelectiveVC = (props: {
-    requiredVC: { id: string };
-    setPresentationVCID: React.Dispatch<React.SetStateAction<string[]>>;
-    presentationVCID: string[];
-  }) => {
+  //TODO: 提示可能な個数のみ選択できるようにする
+  const SelectiveVC: React.FC<{ requiredVCID: string }> = ({ requiredVCID }) => {
     // typeに当てはまるVCを抽出
-    const vcs = getVCsByType(props.requiredVC.id);
+    const vcs = getVCsByType(requiredVCID);
     const hundleClick = (vcID: string) => {
-      if (props.presentationVCID.includes(vcID)) {
-        props.setPresentationVCID(props.presentationVCID.filter((id) => id !== vcID));
+      if (presentationVCIDs.includes(vcID)) {
+        setPresentationVCIDs(presentationVCIDs.filter((id) => id !== vcID));
         setSelectedVC(undefined);
       } else {
-        props.setPresentationVCID([...props.presentationVCID, vcID]);
+        setPresentationVCIDs([...presentationVCIDs, vcID]);
         setSelectedVC(vcs[vcID]);
       }
     };
@@ -59,7 +55,7 @@ export const SelectVC: React.FC<SelectVCProps> = (props) => {
                   }}
                 >
                   <CredentialCard storedVC={storedVC} />
-                  {props.presentationVCID.includes(vcID) && <Icon w="4" h="4" color="green.400" as={CheckIcon} />}
+                  {presentationVCIDs.includes(vcID) && <Icon w="4" h="4" color="green.400" as={CheckIcon} />}
                 </Box>
               </ListItem>
             );
@@ -71,7 +67,7 @@ export const SelectVC: React.FC<SelectVCProps> = (props) => {
 
   return (
     <>
-      {props.vcRequest.claims.vp_token.presentation_definition.input_descriptors.map((requiredVC, i) => {
+      {vcRequest.claims.vp_token.presentation_definition.input_descriptors.map((requiredVC, i) => {
         return (
           <div key={i}>
             <Flex
@@ -98,11 +94,7 @@ export const SelectVC: React.FC<SelectVCProps> = (props) => {
               <DrawerContent>
                 <DrawerHeader borderBottomWidth="1px">Select Credential</DrawerHeader>
                 <DrawerBody>
-                  <SelectiveVC
-                    requiredVC={requiredVC}
-                    presentationVCID={props.presentationVCID}
-                    setPresentationVCID={props.setPresentationVCID}
-                  />
+                  <SelectiveVC requiredVCID={requiredVC.id} />
                   <Button onClick={onClose}>Save</Button>
                 </DrawerBody>
               </DrawerContent>

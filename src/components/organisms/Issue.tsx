@@ -22,6 +22,7 @@ import React from "react";
 import { proxyHttpRequest } from "../../lib/http";
 import { issue } from "../../lib/issue";
 import { authorize } from "../../lib/oidc";
+import { addVCHistory } from "../../lib/repository/vc";
 import { KeyPair, Signer } from "../../lib/signer";
 import { AcquiredIdToken, IdTokenConfiguration, Manifest, RequiredToken, VCRequest } from "../../types";
 import { SelectVC } from "../molecules/IssueanceSelectVC";
@@ -44,7 +45,7 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
   const finalRef = React.useRef(null);
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const [presentationVCID, setPresentationVCID] = React.useState<string[]>([]);
+  const [presentationVCIDs, setPresentationVCIDs] = React.useState<string[]>([]);
   const [pinStatus, setPinStatus] = React.useState<undefined | "success" | "no entered">(undefined);
 
   React.useEffect(() => {
@@ -70,9 +71,15 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
     const signer = new Signer();
     await signer.init(keyPair);
     try {
-      await issue(signer, vcRequest, manifest, acquiredAttestation, presentationVCID);
+      await issue(signer, vcRequest, manifest, acquiredAttestation, presentationVCIDs);
+      presentationVCIDs.map((id) => {
+        addVCHistory(id, `Presention succeed.`);
+      });
       router.push({ pathname: "/result", query: { type: "issue", result: "true" } });
     } catch (e) {
+      presentationVCIDs.map((id) => {
+        addVCHistory(id, `Presention failed.`);
+      });
       router.push({ pathname: "/result", query: { type: "issue", result: "false", errorMessage: "Issue Faild" } });
       console.error(e.message);
     }
@@ -94,49 +101,50 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
               <PreviewCredentialCard manifest={manifest} />
             </Box>
             <Box mb="8">
-              {manifest.input.attestations.idTokens.map((idToken, i) => {
-                const { host } = new URL(idToken.configuration);
+              {manifest.input.attestations.idTokens &&
+                manifest.input.attestations.idTokens.map((idToken, i) => {
+                  const { host } = new URL(idToken.configuration);
 
-                if (idToken.configuration === "https://self-issued.me") {
-                  return <div key={i}></div>;
-                }
-                const fulfilled = acquiredAttestation && acquiredAttestation[idToken.configuration] !== undefined;
-                const bg = fulfilled ? "gray.50" : "blue.50";
-                const cursor = fulfilled ? undefined : "pointer";
-                const onclick = fulfilled ? undefined : () => getIdToken(idToken);
+                  if (idToken.configuration === "https://self-issued.me") {
+                    return <div key={i}></div>;
+                  }
+                  const fulfilled = acquiredAttestation && acquiredAttestation[idToken.configuration] !== undefined;
+                  const bg = fulfilled ? "gray.50" : "blue.50";
+                  const cursor = fulfilled ? undefined : "pointer";
+                  const onclick = fulfilled ? undefined : () => getIdToken(idToken);
 
-                return (
-                  <Flex
-                    key={i}
-                    bg={bg}
-                    py="6"
-                    px="4"
-                    cursor={cursor}
-                    justifyContent="space-between"
-                    alignItems="center"
-                    onClick={onclick}
-                    _disabled={{ opacity: 0.6 }}
-                    // TODO: Sign in が終わっていたらdisabledにする
-                    // disabled={fulfilled}
-                  >
-                    <Box>
-                      <Text fontSize="lg" fontWeight="bold">
-                        Sign in to your account{" "}
-                        {fulfilled && <Icon w="4" h="4" color="green.400" as={BadgeCheckIcon} />}
-                      </Text>
-                      <Text fontSize="sm">{host}</Text>
-                    </Box>
-                    {!fulfilled && <Icon w="4" h="4" as={ChevronRightIcon} />}
-                  </Flex>
-                );
-              })}
+                  return (
+                    <Flex
+                      key={i}
+                      bg={bg}
+                      py="6"
+                      px="4"
+                      cursor={cursor}
+                      justifyContent="space-between"
+                      alignItems="center"
+                      onClick={onclick}
+                      _disabled={{ opacity: 0.6 }}
+                      // TODO: Sign in が終わっていたらdisabledにする
+                      // disabled={fulfilled}
+                    >
+                      <Box>
+                        <Text fontSize="lg" fontWeight="bold">
+                          Sign in to your account{" "}
+                          {fulfilled && <Icon w="4" h="4" color="green.400" as={BadgeCheckIcon} />}
+                        </Text>
+                        <Text fontSize="sm">{host}</Text>
+                      </Box>
+                      {!fulfilled && <Icon w="4" h="4" as={ChevronRightIcon} />}
+                    </Flex>
+                  );
+                })}
             </Box>
             <Box paddingBottom={3}>
               {vcRequest && (
                 <SelectVC
                   manifest={manifest}
-                  presentationVCID={presentationVCID}
-                  setPresentationVCID={setPresentationVCID}
+                  presentationVCIDs={presentationVCIDs}
+                  setPresentationVCIDs={setPresentationVCIDs}
                 />
               )}
             </Box>
@@ -172,10 +180,22 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
                   <Button w="100%">Cancel</Button>
                 </Link>
                 <Button
-                  disabled={
-                    Object.keys(acquiredAttestation).length < manifest.input.attestations.idTokens.length ||
-                    pinStatus === "no entered"
-                  }
+                  disabled={(() => {
+                    if (
+                      (manifest.input.attestations.idTokens &&
+                        Object.keys(acquiredAttestation).length < manifest.input.attestations.idTokens.length) ||
+                      pinStatus === "no entered"
+                    ) {
+                      return true;
+                    } else if (
+                      manifest.input.attestations.presentations &&
+                      presentationVCIDs.length < manifest.input.attestations.presentations.length
+                    ) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  })()}
                   onClick={onOpen}
                   colorScheme="blue"
                 >
