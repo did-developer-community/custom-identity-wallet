@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import { present } from "../../lib/present";
+import { addVCHistory } from "../../lib/repository/vc";
 import { Signer } from "../../lib/signer";
 import { KeyPair } from "../../lib/signer";
 import { VCRequest } from "../../types";
@@ -22,7 +23,7 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
-  const [presentationVCID, setPresentationVCID] = React.useState<string[]>([]);
+  const [presentationVCIDs, setPresentationVCIDs] = React.useState<string[]>([]);
 
   const presentVC = async (keyPair: KeyPair) => {
     setIsLoading(true);
@@ -30,9 +31,16 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
     const signer = new Signer();
     await signer.init(keyPair);
     try {
-      await present(presentationVCID, signer, vcRequest);
+      await present(presentationVCIDs, signer, vcRequest);
+      presentationVCIDs.map((id) => {
+        //TODO: 履歴の文言は要検討
+        addVCHistory(id, `Presention succeed.`);
+      });
       router.push({ pathname: "/result", query: { type: "present", result: "true" } });
     } catch (e) {
+      presentationVCIDs.map((id) => {
+        addVCHistory(id, `Presention failed.`);
+      });
       router.push({ pathname: "/result", query: { type: "present", result: "false", errorMessage: "Present Faild" } });
       console.error("ERROR: " + e.message);
     }
@@ -51,8 +59,8 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
         {vcRequest && (
           <SelectVC
             vcRequest={vcRequest}
-            presentationVCID={presentationVCID}
-            setPresentationVCID={setPresentationVCID}
+            presentationVCIDs={presentationVCIDs}
+            setPresentationVCIDs={setPresentationVCIDs}
           />
         )}
       </Box>
@@ -69,7 +77,7 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
             colorScheme="blue"
             disabled={
               vcRequest &&
-              presentationVCID.length < vcRequest.claims.vp_token.presentation_definition.input_descriptors.length
+              presentationVCIDs.length < vcRequest.claims.vp_token.presentation_definition.input_descriptors.length
             }
           >
             Submit

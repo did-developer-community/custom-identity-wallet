@@ -15,7 +15,7 @@ export interface IssueTemplateProps {
 export const IssueTemplate: React.FC<IssueTemplateProps> = ({ vcRequest, manifest, acquiredAttestation }) => {
   return (
     <Body>
-      <Header />
+      <Header showHomeIcon={true} />
       <Container py="0">
         <Issue vcRequest={vcRequest} manifest={manifest} acquiredAttestation={acquiredAttestation} />
       </Container>

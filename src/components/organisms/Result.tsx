@@ -67,6 +67,7 @@ export const Result: React.FC<ResultProps> = ({ type, result, errorMessage }) =>
           </Box>
         ) : (
           <>
+            <ResultDescription />
             <Flex>
               <Spacer />
               <Button
@@ -80,7 +81,6 @@ export const Result: React.FC<ResultProps> = ({ type, result, errorMessage }) =>
                 OK
               </Button>
             </Flex>
-            <ResultDescription />
           </>
         )}
       </Box>

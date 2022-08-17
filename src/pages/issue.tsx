@@ -43,7 +43,6 @@ const IssuePage: React.FC<IssuePageProps> = ({ queryCode, queryState }) => {
           const manifestToken = await axios.get<{ token: string }>(manifestUrl.toString()).then((res) => {
             return res.data.token;
           });
-          console.log("manifestToken", manifestToken);
           manifest = getManifestFromJWT(manifestToken);
         } else if (manifestUrl.hostname == "beta.did.msidentity.com") {
           // This is Beta issuer.
@@ -78,9 +77,7 @@ const IssuePage: React.FC<IssuePageProps> = ({ queryCode, queryState }) => {
           )
           .then((resp) => resp.data);
         acquiredAttestation[idTokenKey] = idToken;
-        console.log(acquiredAttestation);
       }
-
       // id_token_hint
       if (vcRequest.id_token_hint) {
         acquiredAttestation["idTokens"] = { "https://self-issued.me": vcRequest.id_token_hint };

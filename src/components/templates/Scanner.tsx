@@ -8,7 +8,7 @@ import { Scanner } from "../organisms/Scanner";
 export const ScannerTemplate: React.FC = () => {
   return (
     <Body>
-      <Header />
+      <Header showHomeIcon={true} />
       <Container py="8">
         <Scanner />
       </Container>
