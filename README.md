@@ -1,6 +1,7 @@
 # Custom Identity Wallet
 
 This is a very simple and plain white label Wallet SDK. As a customizable decentralized identity wallet, it can handle verifiable credentials.
+Powererd by [BlockBase](https://www.block-base.co/)
 
 ## About
 
@@ -84,3 +85,4 @@ This application used credentials following [Verifiable Credential](https://www.
    <br>
 4. Submit and unlock your wallet(decrypt private key)
 5. "Success" is displayed and Verifier can receive the credential
+
