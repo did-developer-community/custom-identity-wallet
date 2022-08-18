@@ -1,10 +1,12 @@
 # Custom Identity Wallet
 
-Customizable ID Wallet as an in-house solution
+This is a very simple and plain white label Wallet SDK. As a customizable decentralized identity wallet, it can handle verifiable credentials.
 
 ## About
 
-Certificates are a tool to express one's identity. This application is to use credentials necessary for life. This application used credentials following [Verifiable Credential](https://www.w3.org/TR/vc-data-model/) recommended by W3C.
+Certificates are a tool to express one's identity. The application can hold certificates and use cryptography to more securely issue and present certificates to verifiers.
+
+This application used credentials following [Verifiable Credential](https://www.w3.org/TR/vc-data-model/) recommended by W3C.
 
 ### Background
 
@@ -13,7 +15,7 @@ Certificates are a tool to express one's identity. This application is to use cr
 
 ### Why we published
 
-- Need a variety of feedback from people who have used the wallet app globally to improve the wallet app.
+- Need a variety of feedback from people who have used the wallet app globally to improve the wallet app. We would also like to use this as a basis for a broad discussion of possible use cases for verifiable credentials.
 
 ### Specific example of wallets’ use case
 
