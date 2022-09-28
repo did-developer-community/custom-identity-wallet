@@ -86,3 +86,10 @@ This application used credentials following [Verifiable Credential](https://www.
 4. Submit and unlock your wallet(decrypt private key)
 5. "Success" is displayed and Verifier can receive the credential
 
+### Use from external site
+
+https://custom-identity-wallet.vercel.app/redirect/url?=URL
+<br>
+ex)
+<br>
+https://custom-identity-wallet.vercel.app/redirect/url?=openid-vc://?request_uri=https://beta.did.msidentity.com/v1.0/...

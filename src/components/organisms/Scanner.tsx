@@ -5,11 +5,7 @@ import React from "react";
 
 import { LOCAL_STORAGE_VC_REQUEST_KEY } from "../../configs/constants";
 import { proxyHttpRequest } from "../../lib/http";
-import {
-  getProtectedHeaderFromVCRequest,
-  getRequestFromVCRequest,
-  getRequestUrlFromQRCodeMessage,
-} from "../../lib/utils";
+import { getProtectedHeaderFromVCRequest, getRequestFromVCRequest, getRequestUrlFromUrlMessage } from "../../lib/utils";
 
 const QrReader = dynamic(() => import("react-qr-reader"), { ssr: false }) as any;
 
@@ -24,7 +20,7 @@ export const Scanner: React.FC = () => {
     }
     setIsProcessing(true);
     console.log("QR code scanned:", message);
-    const requestUrl = getRequestUrlFromQRCodeMessage(message);
+    const requestUrl = getRequestUrlFromUrlMessage(message);
     let vcRequestInJwt = "";
     let vcRequestVerified = "";
     try {
