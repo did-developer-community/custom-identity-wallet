@@ -11375,10 +11375,10 @@ jest@^27.2.4:
     import-local "^3.0.2"
     jest-cli "^27.5.1"
 
-jose@^3.20.1:
-  version "3.20.3"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-3.20.3.tgz#a074f684b07e49b35c075d97561883e3c637abf2"
-  integrity sha512-Z4a5Nl4pmGivdSgaq+a5EbNjrvSO4vtBTmVy5C3HNxWfJ92aG8DTNZrQywowxyOlSqdX/BmCPAy/ieElXDM3pw==
+jose@^3.20.4:
+  version "3.20.4"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-3.20.4.tgz#f5b6559cf2625efca098e472257525c6f3d302be"
+  integrity sha512-PRnyOQwWGD3EZnnSpKOOLqQ0RT9chbB8f8AzY4bEHY0I2FCtrcp1ojG0nBgAMn2MtuPpE3wOwIhhW0G7AGzbLw==
 
 js-sha3@0.8.0, js-sha3@^0.8.0:
   version "0.8.0"
