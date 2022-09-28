@@ -16,7 +16,7 @@ export interface VCData {
   };
 }
 
-export const getRequestUrlFromQRCodeMessage = (message: string): string => {
+export const getRequestUrlFromUrlMessage = (message: string): string => {
   const urlSearchParams = new URLSearchParams(message);
   const requestUrl = urlSearchParams.get(QR_REQUEST_URI_KEY);
   if (!requestUrl) {
