@@ -54,7 +54,6 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
           New Permission Request
         </Text>
       </Box>
-      <Box px="2" mb="8"></Box>
       <Box paddingBottom={3}>
         {vcRequest && (
           <SelectVC

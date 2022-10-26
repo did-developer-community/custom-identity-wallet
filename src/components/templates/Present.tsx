@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Manifest, VCRequest } from "../../types";
+import { VCRequest } from "../../types";
 import { Body } from "../atoms/Body";
 import { Container } from "../atoms/Container";
 import { Header } from "../organisms/Header";

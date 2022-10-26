@@ -58,7 +58,7 @@ export const deleteVC = (key: string): void => {
   const VCs = getVCs();
   delete VCs[key];
   localStorage.setItem(LOCAL_STORAGE_VC, JSON.stringify(VCs));
-  if (VCs === {}) {
+  if (Object.keys(VCs).length === 0) {
     localStorage.setItem(LOCAL_STORAGE_VC, undefined);
   }
 };

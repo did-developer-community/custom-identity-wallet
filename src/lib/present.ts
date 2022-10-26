@@ -1,5 +1,4 @@
 import axios from "axios";
-import qs from "querystring";
 import { v4 as uuidv4 } from "uuid";
 
 import { VCRequest } from "../types";
@@ -60,7 +59,7 @@ export const present = async (presentationVCIDs: string[], signer: Signer, vcReq
 
   await axios.post(
     vcRequest.redirect_uri ? vcRequest.redirect_uri : vcRequest.client_id,
-    qs.stringify({
+    new URLSearchParams({
       id_token: verifyRequestIdToken,
       vp_token: vp,
       state: vcRequest.state,

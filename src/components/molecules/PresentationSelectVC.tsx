@@ -14,9 +14,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { BadgeCheckIcon, CheckIcon, ChevronRightIcon } from "@heroicons/react/outline";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { getVCsByType, StoredVC } from "../../lib/repository/vc";
+import { getVCsByType } from "../../lib/repository/vc";
 import { VCRequest } from "../../types";
 import { CredentialCard } from "./CredentialCard";
 
@@ -28,42 +28,39 @@ export interface SelectVCProps {
 
 export const SelectVC: React.FC<SelectVCProps> = ({ vcRequest, presentationVCIDs, setPresentationVCIDs }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedVC, setSelectedVC] = React.useState<StoredVC>();
-  //TODO: 提示可能な個数のみ選択できるようにする
-  const SelectiveVC: React.FC<{ requiredVCID: string }> = ({ requiredVCID }) => {
-    // typeに当てはまるVCを抽出
-    const vcs = getVCsByType(requiredVCID);
-    const hundleClick = (vcID: string) => {
-      if (presentationVCIDs.includes(vcID)) {
-        setPresentationVCIDs(presentationVCIDs.filter((id) => id !== vcID));
-        setSelectedVC(undefined);
-      } else {
-        setPresentationVCIDs([...presentationVCIDs, vcID]);
-        setSelectedVC(vcs[vcID]);
-      }
-    };
-    return (
-      <>
-        <List>
-          {Object.keys(vcs).map((vcID, index) => {
-            const storedVC = vcs[vcID];
-            return (
-              <ListItem key={index}>
-                <Box
-                  onClick={() => {
-                    hundleClick(vcID);
-                  }}
-                >
-                  <CredentialCard storedVC={storedVC} />
-                  {presentationVCIDs.includes(vcID) && <Icon w="4" h="4" color="green.400" as={CheckIcon} />}
-                </Box>
-              </ListItem>
-            );
-          })}
-        </List>
-      </>
-    );
+  const [selectedVCType, setSelectedVCType] = React.useState("");
+  const [isVCTypeSelected, setIsVCTypeSelected] = React.useState<{ [key: string]: boolean }>({});
+
+  const [vcs, setVCS] = useState<any>({});
+
+  const hundleClick = (vcID: string) => {
+    const target = vcID;
+    const key = selectedVCType;
+    if (presentationVCIDs.includes(target)) {
+      console.log(presentationVCIDs);
+      console.log(presentationVCIDs.filter((id) => id !== target));
+      setPresentationVCIDs(presentationVCIDs.filter((id) => id !== target));
+      isVCTypeSelected[key] = false;
+      setIsVCTypeSelected(isVCTypeSelected);
+    } else {
+      console.log("debug");
+      setPresentationVCIDs([...presentationVCIDs, target]);
+      setIsVCTypeSelected({ ...isVCTypeSelected, [key]: true });
+    }
   };
+
+  const selectVCType = (id: string) => {
+    setSelectedVCType(id);
+    onOpen();
+  };
+
+  useEffect(() => {
+    if (!selectedVCType) {
+      return;
+    }
+    const vcs = getVCsByType(selectedVCType);
+    setVCS(vcs);
+  }, [selectedVCType]);
 
   return (
     <>
@@ -77,31 +74,48 @@ export const SelectVC: React.FC<SelectVCProps> = ({ vcRequest, presentationVCIDs
               cursor={"pointer"}
               justifyContent="space-between"
               alignItems="center"
-              onClick={onOpen}
+              onClick={() => selectVCType(requiredVC.id)}
             >
               <Box>
                 <Text fontSize="lg" fontWeight="bold">
-                  {selectedVC ? "" : "Select Credential"}
+                  {isVCTypeSelected[requiredVC.id] ? "" : "Select Credential"}
                 </Text>
                 <Text color={"red.500"} fontWeight="bold">
-                  [{requiredVC.id}]{selectedVC && <Icon w="4" h="4" color="green.400" as={BadgeCheckIcon} />}
+                  [{requiredVC.id}]
+                  {isVCTypeSelected[requiredVC.id] && <Icon w="4" h="4" color="green.400" as={BadgeCheckIcon} />}
                 </Text>
               </Box>
               {<Icon w="4" h="4" as={ChevronRightIcon} />}
             </Flex>
-            <Drawer size={"full"} onClose={onClose} isOpen={isOpen}>
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerHeader borderBottomWidth="1px">Select Credential</DrawerHeader>
-                <DrawerBody>
-                  <SelectiveVC requiredVCID={requiredVC.id} />
-                  <Button onClick={onClose}>Save</Button>
-                </DrawerBody>
-              </DrawerContent>
-            </Drawer>
           </div>
         );
       })}
+      <Drawer size={"full"} onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">Select Credential</DrawerHeader>
+          <DrawerBody>
+            <List>
+              {Object.keys(vcs).map((vcID, index) => {
+                const storedVC = vcs[vcID];
+                return (
+                  <ListItem key={index}>
+                    <Box
+                      onClick={() => {
+                        hundleClick(vcID);
+                      }}
+                    >
+                      <CredentialCard storedVC={storedVC} />
+                      {presentationVCIDs.includes(vcID) && <Icon w="4" h="4" color="green.400" as={CheckIcon} />}
+                    </Box>
+                  </ListItem>
+                );
+              })}
+            </List>
+            <Button onClick={onClose}>Save</Button>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
