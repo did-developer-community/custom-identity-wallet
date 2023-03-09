@@ -51,3 +51,13 @@ export const decodeJWTToVCData = (jwt: string): VCData => {
 export const getManifestFromJWT = (jwt: string): Manifest => {
   return <Manifest>jsonwebtoken.decode(jwt);
 };
+
+export const calcPinhash = async (pin: string): Promise<string> => {
+  // PINコードをバイト配列に変換する
+  const bytes = new TextEncoder().encode(pin);
+  // SHA-256ハッシュ関数を使用してハッシュ値を計算する
+  const hashBuffer = await crypto.subtle.digest("SHA-256", bytes);
+  // 計算されたハッシュ値をBase64エンコードする
+  const pinhash = btoa(String.fromCharCode(...Array.from(new Uint8Array(hashBuffer))));
+  return pinhash;
+};

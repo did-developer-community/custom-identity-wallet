@@ -24,8 +24,9 @@ import { issue } from "../../lib/issue";
 import { authorize } from "../../lib/oidc";
 import { addVCHistory } from "../../lib/repository/vc";
 import { KeyPair, Signer } from "../../lib/signer";
+import { calcPinhash } from "../../lib/utils";
 import { AcquiredIdToken, IdTokenConfiguration, Manifest, RequiredToken, VCRequest } from "../../types";
-import { SelectVC } from "../molecules/IssueanceSelectVC";
+import { SelectVC } from "../molecules/IssuanceSelectVC";
 import { PreviewCredentialCard } from "../molecules/PreviewCredentialCard";
 import { Unlock } from "./Unlock";
 const PinInput = dynamic(() => import("react-pin-input"), { ssr: false });
@@ -47,6 +48,7 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
   const [isLoading, setIsLoading] = React.useState(false);
   const [presentationVCIDs, setPresentationVCIDs] = React.useState<string[]>([]);
   const [pinStatus, setPinStatus] = React.useState<undefined | "success" | "no entered">(undefined);
+  const [pin, setPin] = React.useState<string>("");
 
   React.useEffect(() => {
     if (vcRequest?.pin !== undefined) {
@@ -71,7 +73,8 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
     const signer = new Signer();
     await signer.init(keyPair);
     try {
-      await issue(signer, vcRequest, manifest, acquiredAttestation, presentationVCIDs);
+      const pinhash = await calcPinhash(pin);
+      await issue(signer, vcRequest, manifest, acquiredAttestation, presentationVCIDs, { pin: pinhash });
       presentationVCIDs.map((id) => {
         addVCHistory(id, `Presention succeed.`);
       });
@@ -140,13 +143,17 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
                 })}
             </Box>
             <Box paddingBottom={3}>
-              {vcRequest && (
-                <SelectVC
-                  manifest={manifest}
-                  presentationVCIDs={presentationVCIDs}
-                  setPresentationVCIDs={setPresentationVCIDs}
-                />
-              )}
+              {vcRequest &&
+                manifest.input.attestations.presentations.map((requiedVC, i) => {
+                  return (
+                    <SelectVC
+                      key={i}
+                      requiredVC={requiedVC}
+                      presentationVCIDs={presentationVCIDs}
+                      setPresentationVCIDs={setPresentationVCIDs}
+                    />
+                  );
+                })}
             </Box>
             {pinStatus && (
               <Box>
@@ -162,7 +169,8 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
                       inputMode="number"
                       onChange={(value, index) => {
                         // TODO: 動的にpin valueを設定する
-                        if (value === "1234") {
+                        if (value.length === 4) {
+                          setPin(value);
                           setPinStatus("success");
                         } else {
                           setPinStatus("no entered");

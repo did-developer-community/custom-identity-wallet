@@ -35,6 +35,7 @@ export interface SiopOptions {
       }?
     ];
   };
+  pin?: string;
 }
 
 export interface SiopV2Options {

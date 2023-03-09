@@ -30,7 +30,8 @@ export const issue = async (
   vcRequest: VCRequest,
   manifest: Manifest,
   acquiredIdToken: AcquiredIdToken,
-  presentationVCIDs: string[]
+  presentationVCIDs: string[],
+  options?: { [key: string]: any }
 ): Promise<void> => {
   const vcs = [];
   let attestations: any = { ...acquiredIdToken };
@@ -70,6 +71,7 @@ export const issue = async (
     aud: manifest.input.credentialIssuer,
     contract: manifest.display.contract,
     attestations,
+    pin: options?.pin,
   });
 
   const issueResponse = await axios.post<string, IIssueResponse>(manifest.input.credentialIssuer, issueRequestIdToken, {
