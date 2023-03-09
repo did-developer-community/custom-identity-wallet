@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react/types-6-0";
 
 import { manifest, presentationVCIDs } from "../../fixtures";
-import { SelectVC as Component, SelectVCProps as Props } from "./IssueanceSelectVC";
+import { SelectVC as Component, SelectVCProps as Props } from "./IssuanceSelectVC";
 
 export default {
   title: "Molecules/IssueanceSelectVC",

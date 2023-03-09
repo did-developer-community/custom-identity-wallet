@@ -56,13 +56,18 @@ export const Present: React.FC<PresentProps> = ({ vcRequest }) => {
       </Box>
       <Box px="2" mb="8"></Box>
       <Box paddingBottom={3}>
-        {vcRequest && (
-          <SelectVC
-            vcRequest={vcRequest}
-            presentationVCIDs={presentationVCIDs}
-            setPresentationVCIDs={setPresentationVCIDs}
-          />
-        )}
+        {vcRequest &&
+          vcRequest.claims.vp_token.presentation_definition.input_descriptors.map((requiredVC, index) => {
+            return (
+              <Box key={index}>
+                <SelectVC
+                  requiredVC={requiredVC}
+                  presentationVCIDs={presentationVCIDs}
+                  setPresentationVCIDs={setPresentationVCIDs}
+                />
+              </Box>
+            );
+          })}
       </Box>
 
       <Box px="2">

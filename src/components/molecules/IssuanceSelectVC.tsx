@@ -17,15 +17,11 @@ import { BadgeCheckIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
 
 import { getVCsByType } from "../../lib/repository/vc";
+import { RequiredPresentation } from "../../types";
 import { CredentialCard } from "./CredentialCard";
 
 export interface SelectVCProps {
-  requiredVC: {
-    id: string;
-    issuance: {
-      manifest: string;
-    }[];
-  };
+  requiredVC: RequiredPresentation;
   presentationVCIDs: string[];
   setPresentationVCIDs: React.Dispatch<React.SetStateAction<string[]>>;
 }
@@ -45,7 +41,6 @@ export const SelectVC: React.FC<SelectVCProps> = ({ requiredVC, presentationVCID
         setIsSelected(true);
       }
     };
-
     return (
       <>
         <List>
@@ -86,7 +81,7 @@ export const SelectVC: React.FC<SelectVCProps> = ({ requiredVC, presentationVCID
               {isSelected ? "" : "Select Credential"}
             </Text>
             <Text color={"red.500"} fontWeight="bold">
-              [{requiredVC.id}]{isSelected && <Icon w="4" h="4" color="green.400" as={BadgeCheckIcon} />}
+              [{requiredVC.credentialType}]{isSelected && <Icon w="4" h="4" color="green.400" as={BadgeCheckIcon} />}
             </Text>
           </Box>
           {<Icon w="4" h="4" as={ChevronRightIcon} />}
