@@ -143,7 +143,7 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
                 })}
             </Box>
             <Box paddingBottom={3}>
-              {vcRequest &&
+              {manifest.input.attestations.presentations &&
                 manifest.input.attestations.presentations.map((requiedVC, i) => {
                   return (
                     <SelectVC
