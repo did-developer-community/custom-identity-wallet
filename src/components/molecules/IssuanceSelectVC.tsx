@@ -13,7 +13,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { BadgeCheckIcon, CheckIcon, ChevronRightIcon } from "@heroicons/react/outline";
+import { BadgeCheckIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
 
 import { getVCsByType } from "../../lib/repository/vc";
@@ -51,10 +51,10 @@ export const SelectVC: React.FC<SelectVCProps> = ({ requiredVC, presentationVCID
                 <Box
                   onClick={() => {
                     handleVCClick(vcID);
+                    onClose();
                   }}
                 >
-                  <CredentialCard storedVC={storedVC} />
-                  {presentationVCIDs.includes(vcID) && <Icon w="4" h="4" color="green.400" as={CheckIcon} />}
+                  <CredentialCard storedVC={storedVC} isSelected={presentationVCIDs.includes(vcID)} />
                 </Box>
               </ListItem>
             );
@@ -92,7 +92,6 @@ export const SelectVC: React.FC<SelectVCProps> = ({ requiredVC, presentationVCID
             <DrawerHeader borderBottomWidth="1px">Select Credential</DrawerHeader>
             <DrawerBody>
               <SelectiveVC requiredVCID={requiredVC.id} />
-              <Button onClick={onClose}>Save</Button>
             </DrawerBody>
           </DrawerContent>
         </Drawer>

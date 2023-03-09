@@ -1,13 +1,9 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
-import { Manifest } from "../../../types";
+import { PreviewCredentialCardProps } from "../../molecules/PreviewCredentialCard";
 
-interface PreviewPlainCardProps {
-  manifest: Manifest;
-}
-
-export const PreviewPlainCard: React.FC<PreviewPlainCardProps> = ({ manifest }) => {
+export const PreviewPlainCard: React.FC<PreviewCredentialCardProps> = ({ manifest }) => {
   const { card } = manifest.display;
 
   return (
