@@ -52,9 +52,11 @@ export const getManifestFromJWT = (jwt: string): Manifest => {
   return <Manifest>jsonwebtoken.decode(jwt);
 };
 
-export const calcPinhash = async (pin: string): Promise<string> => {
+// TODO: algに応じてハッシュ化を行うようにする。
+export const calcPinhash = async (pin: string, salt?: string): Promise<string> => {
+  const hashInput = salt ? salt + pin : pin;
   // PINコードをバイト配列に変換する
-  const bytes = new TextEncoder().encode(pin);
+  const bytes = new TextEncoder().encode(hashInput);
   // SHA-256ハッシュ関数を使用してハッシュ値を計算する
   const hashBuffer = await crypto.subtle.digest("SHA-256", bytes);
   // 計算されたハッシュ値をBase64エンコードする

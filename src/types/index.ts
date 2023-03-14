@@ -81,5 +81,6 @@ export interface VCRequest {
     length?: number;
     type?: string;
     hash?: string;
+    salt?: string;
   };
 }
