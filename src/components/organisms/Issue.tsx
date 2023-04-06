@@ -73,7 +73,7 @@ export const Issue: React.FC<IssueProps> = ({ vcRequest, manifest, acquiredAttes
     const signer = new Signer();
     await signer.init(keyPair);
     try {
-      const pinhash = await calcPinhash(pin, vcRequest.pin.salt);
+      const pinhash = await calcPinhash(pin, vcRequest.pin?.salt);
       await issue(signer, vcRequest, manifest, acquiredAttestation, presentationVCIDs, { pin: pinhash });
       presentationVCIDs.map((id) => {
         addVCHistory(id, `Presention succeed.`);
